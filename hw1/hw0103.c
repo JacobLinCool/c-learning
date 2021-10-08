@@ -1,19 +1,17 @@
 #include <stdio.h>
+#include <stdint.h>
 
 int main() {
-    float acceleration, time, velocity, altitude;
+    int16_t input;
 
-    printf("Please enter the acceleration due to gravity: ");
-    scanf("%f", &acceleration);
+    printf("Please enter an unsigned 16-bits number: ");
+    scanf("%d", &input);
 
-    printf("Please enter the time (s): ");
-    scanf("%f", &time);
+    printf("Before Flip:\n%d_10 = %x_16\n", input, input);
 
-    velocity = acceleration * time;
-    altitude = (acceleration * time * time) / 2;
+    int16_t flipped = (input & 0xF000) >> 12 | (input & 0x0F00) >> 4 | (input & 0x00F0) << 4 | (input & 0x000F) << 12;
 
-    // print the results, only print 2 decimal places of velocity and 3 decimal places of altitude
-    printf("Final velocity: %.2f m/s\nThe altitude: %.3f m\n", velocity, altitude);
+    printf("After Flip:\n%d_10 = %x_16\n", flipped, flipped);
 
     return 0;
 }
