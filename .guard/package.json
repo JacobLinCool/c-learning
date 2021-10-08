@@ -1,0 +1,20 @@
+{
+  "name": "c-learning-guard",
+  "version": "1.0.0",
+  "description": "可以 make 嗎？",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JacobLinCool/c-learning.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JacobLinCool/c-learning/issues"
+  },
+  "homepage": "https://github.com/JacobLinCool/c-learning#readme"
+}
