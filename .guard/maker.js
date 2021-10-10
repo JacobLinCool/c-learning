@@ -8,27 +8,30 @@ async function make(homework) {
     log("=====");
     log(`Generating resources of ${homework}`);
     const cFiles = fs.readdirSync(path.join(__dirname, "../", homework)).filter((f) => f.endsWith(".c"));
-    const pdfFiles = fs.readdirSync(path.join(__dirname, "../", homework)).filter((f) => f.endsWith(".pdf"));
 
     // Makefile
     const makefile = createMakefile(cFiles);
     fs.writeFileSync(path.join(__dirname, "../", homework, "Makefile"), makefile);
 
     // README
-    if (!fs.existsSync(path.join(__dirname, "../", homework, "README")))
-        fs.writeFileSync(path.join(__dirname, "../", homework, "README"), createREADME(cFiles));
+    if (!fs.existsSync(path.join(__dirname, "../", homework, "README.md")))
+        fs.writeFileSync(path.join(__dirname, "../", homework, "README.md"), createREADME(cFiles));
 
     // MD -> PDF
     if (fs.existsSync(path.join(__dirname, "../", homework, "README.md")))
         await MDtoPDF(path.join(__dirname, "../", homework, "README.md"), path.join(__dirname, "../", homework, "README.pdf"));
     const mdFiles = fs.readdirSync(path.join(__dirname, "../", homework)).filter((f) => f.endsWith(".md"));
-    for (const mdFile of mdFiles)
+    for (const mdFile of mdFiles) {
+        log(`Converting ${mdFile} to PDF`);
         await MDtoPDF(path.join(__dirname, "../", homework, mdFile), path.join(__dirname, "../", homework, mdFile.replace(".md", ".pdf")));
+    }
+
+    const pdfFiles = fs.readdirSync(path.join(__dirname, "../", homework)).filter((f) => f.endsWith(".pdf"));
 
     // ZIP
     const { stdout, stderr } = await exec(`cd ${homework} && zip ${homework}.zip README Makefile ${cFiles.join(" ")} ${pdfFiles.join(" ")}`);
     log(`STDOUT: \n${stdout}`);
-    log(`STDERR: \n${stderr || "No Error. Excellent!"}`);
+    if (stderr) log(`STDERR: \n${stderr}`);
     if (fs.existsSync(path.join(__dirname, "../", homework, `${homework}.zip`))) {
         if (!fs.existsSync(path.join(__dirname, "../", "dist"))) fs.mkdirSync(path.join(__dirname, "../", "dist"));
         fs.renameSync(path.join(__dirname, "../", homework, `${homework}.zip`), path.join(__dirname, "../", "dist", `${homework}.zip`));
@@ -49,10 +52,10 @@ function createMakefile(cFiles) {
 
 function createREADME(cFiles) {
     let readme =
-        `---
-    Title:  程式設計一 Homework 1
+        `
+    # 程式設計一 Homework 1
     Author: 師大資工 114 林振可 (41047029S)
-    ---
+    
     
     建議使用 Linux 系統執行。
     
@@ -64,7 +67,7 @@ function createREADME(cFiles) {
     if (cFiles.length) {
         readme += "\n";
         readme += "2. 執行程式\n";
-        readme += "分別執行" + cFiles.map((f) => `\t./${f.split(".")[0]}`).join(", ");
+        readme += "分別執行 " + cFiles.map((f) => `./${f.split(".")[0]}`).join(" | ");
     }
 
     return readme;

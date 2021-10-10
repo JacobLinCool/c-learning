@@ -8,7 +8,7 @@ async function check(homework) {
         log(`Running "make" for ${homework}`);
         const { stdout, stderr } = await exec(`cd ${path.join(__dirname, "../", homework)} && make`);
         log(`STDOUT: \n${stdout}`);
-        log(`STDERR: \n${stderr || "No Error. Excellent!"}`);
+        if (stderr) log(`STDERR: \n${stderr}`);
         if (stdout.match(/warning/i)) console.log("WRANING!!");
         if (stdout.match(/error/i)) console.log("ERROR!!!");
     } catch (error) {

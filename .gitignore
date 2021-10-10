@@ -15,3 +15,5 @@
 *.exe
 
 .guard/node_modules/
+
+dist/
