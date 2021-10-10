@@ -19,3 +19,11 @@ jobs:
           node-version: "16"
       - name: Run Guard
         run: "node .guard"
+      - name: Save
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: "./dist"
+          user_name: "JacobLinCool"
+          user_email: "jacoblincool@users.noreply.github.com"
+          publish_branch: "homework"
