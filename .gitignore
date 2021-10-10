@@ -13,3 +13,5 @@
 
 # ignore EXE
 *.exe
+
+.guard/node_modules/

@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/JacobLinCool/c-learning/issues"
   },
-  "homepage": "https://github.com/JacobLinCool/c-learning#readme"
+  "homepage": "https://github.com/JacobLinCool/c-learning#readme",
+  "dependencies": {
+    "md-to-pdf": "^5.0.0"
+  }
 }
