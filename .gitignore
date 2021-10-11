@@ -17,3 +17,5 @@
 .guard/node_modules/
 
 dist/
+
+**/*.pdf

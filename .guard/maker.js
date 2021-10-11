@@ -47,35 +47,44 @@ function createMakefile(cFiles) {
     makefile += "clean: \n";
     makefile += cFiles.map((f) => `\trm ${f.split(".")[0]}`).join("\n");
     makefile += "\n";
+    log("Generated Makefile:\n---\n" + makefile + "\n---\n");
     return makefile;
 }
 
 function createREADME(cFiles) {
     let readme =
-        `
-    # 程式設計一 Homework 1
+        `# 程式設計一 Homework 1
+
     Author: 師大資工 114 林振可 (41047029S)
-    
     
     建議使用 Linux 系統執行。
     
-    1. 編譯程式
+    ## 1. 編譯程式
+    
     請於此目錄執行：make`
             .split("\n")
             .map((line) => line.trim())
             .join("\n") + "\n";
     if (cFiles.length) {
         readme += "\n";
-        readme += "2. 執行程式\n";
+        readme += "## 2. 執行程式\n\n";
         readme += "分別執行 " + cFiles.map((f) => `./${f.split(".")[0]}`).join(" | ");
+        readme += "\n";
     }
 
+    log("Generated README.md:\n---\n" + readme + "\n---\n");
     return readme;
 }
 
 async function MDtoPDF(filepath, distpath) {
     try {
-        const pdf = await mdToPdf({ path: filepath }, { highlight_style: "nord" });
+        const pdf = await mdToPdf(
+            { path: filepath },
+            {
+                highlight_style: "nord",
+                css: "code { background: #2E3440 !important; }",
+            }
+        );
         if (pdf) fs.writeFileSync(distpath, pdf.content);
         else throw new Error("PDF Conversion Failed.");
     } catch (err) {
