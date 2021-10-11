@@ -11,11 +11,11 @@ async function make(homework) {
 
     // Makefile
     const makefile = createMakefile(cFiles);
-    fs.writeFileSync(path.join(__dirname, "../", homework, "Makefile"), makefile);
+    fs.writeFileSync(path.join(__dirname, "../", homework, "Makefile"), makefile, "utf8");
 
     // README
     if (!fs.existsSync(path.join(__dirname, "../", homework, "README.md")))
-        fs.writeFileSync(path.join(__dirname, "../", homework, "README.md"), createREADME(cFiles));
+        fs.writeFileSync(path.join(__dirname, "../", homework, "README.md"), createREADME(cFiles), "utf8");
 
     // MD -> PDF
     if (fs.existsSync(path.join(__dirname, "../", homework, "README.md")))
