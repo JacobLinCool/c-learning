@@ -19,6 +19,8 @@ jobs:
           node-version: "16"
       - name: Install NPM Packages
         run: "cd .guard && npm i && cd .."
+      - name: Check Language
+        run: locale
       - name: Run Guard
         run: "node .guard"
       - name: Save
