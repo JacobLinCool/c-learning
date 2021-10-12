@@ -19,8 +19,10 @@ jobs:
           node-version: "16"
       - name: Install NPM Packages
         run: "cd .guard && npm i && cd .."
-      - name: Check Fonts
-        run: fc-list
+      - name: Install Fonts
+        run: |
+          sudo apt-get install language-pack-zh*
+          sudo apt-get install chinese*
       - name: Run Guard
         run: "node .guard"
       - name: Save
