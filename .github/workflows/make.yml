@@ -19,10 +19,26 @@ jobs:
           node-version: "16"
       - name: Install NPM Packages
         run: "cd .guard && npm i && cd .."
+      - name: Cache Fonts
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-fonts
+        with:
+          path: /usr/share/fonts
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
       - name: Install Fonts
         run: |
-          sudo apt-get install language-pack-zh*
-          sudo apt-get install chinese*
+          sudo apt-get install language-pack-zh-hant
+          wget -c https://noto-website.storage.googleapis.com/pkgs/Noto-hinted.zip
+          unzip Noto-hinted.zip -d Noto
+          sudo mv Noto /usr/local/share/fonts/
+          sudo chmod 777 /usr/local/share/fonts/Noto/* -R
+          sudo chmod 777 /usr/local/share/fonts/Noto
+          sudo fc-cache -fv
       - name: Run Guard
         run: "node .guard"
       - name: Save

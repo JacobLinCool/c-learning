@@ -9,15 +9,17 @@ async function make(homework) {
     log(`Generating resources of ${homework}`);
     const cFiles = fs.readdirSync(path.join(__dirname, "../", homework)).filter((f) => f.endsWith(".c"));
 
-    // Makefile
+    //#region Makefile
     const makefile = createMakefile(cFiles);
     fs.writeFileSync(path.join(__dirname, "../", homework, "Makefile"), makefile, "utf8");
+    //#endregion
 
-    // README
+    //#region README.md
     if (!fs.existsSync(path.join(__dirname, "../", homework, "README.md")))
         fs.writeFileSync(path.join(__dirname, "../", homework, "README.md"), createREADME(cFiles), "utf8");
+    //#endregion
 
-    // MD -> PDF
+    //#region MD -> PDF
     if (fs.existsSync(path.join(__dirname, "../", homework, "README.md")))
         await MDtoPDF(path.join(__dirname, "../", homework, "README.md"), path.join(__dirname, "../", homework, "README.pdf"));
     const mdFiles = fs.readdirSync(path.join(__dirname, "../", homework)).filter((f) => f.endsWith(".md"));
@@ -25,18 +27,24 @@ async function make(homework) {
         log(`Converting ${mdFile} to PDF`);
         await MDtoPDF(path.join(__dirname, "../", homework, mdFile), path.join(__dirname, "../", homework, mdFile.replace(".md", ".pdf")));
     }
+    //#endregion
 
     const pdfFiles = fs.readdirSync(path.join(__dirname, "../", homework)).filter((f) => f.endsWith(".pdf"));
 
-    // ZIP
-    const { stdout, stderr } = await exec(`cd ${homework} && zip ${homework}.zip README Makefile ${cFiles.join(" ")} ${pdfFiles.join(" ")}`);
-    log(`STDOUT: \n${stdout}`);
-    if (stderr) log(`STDERR: \n${stderr}`);
-    if (fs.existsSync(path.join(__dirname, "../", homework, `${homework}.zip`))) {
-        if (!fs.existsSync(path.join(__dirname, "../", "dist"))) fs.mkdirSync(path.join(__dirname, "../", "dist"));
-        fs.renameSync(path.join(__dirname, "../", homework, `${homework}.zip`), path.join(__dirname, "../", "dist", `${homework}.zip`));
-        log(`${homework}.zip is generated.`);
+    //#region  ZIP
+    if (process.platform === "win32") {
+        log("Windows does not support zip command.");
+    } else {
+        const { stdout, stderr } = await exec(`cd ${homework} && zip ${homework}.zip README Makefile ${cFiles.join(" ")} ${pdfFiles.join(" ")}`);
+        log(`STDOUT: \n${stdout}`);
+        if (stderr) log(`STDERR: \n${stderr}`);
+        if (fs.existsSync(path.join(__dirname, "../", homework, `${homework}.zip`))) {
+            if (!fs.existsSync(path.join(__dirname, "../", "dist"))) fs.mkdirSync(path.join(__dirname, "../", "dist"));
+            fs.renameSync(path.join(__dirname, "../", homework, `${homework}.zip`), path.join(__dirname, "../", "dist", `${homework}.zip`));
+            log(`${homework}.zip is generated.`);
+        }
     }
+    //#endregion
 }
 
 function createMakefile(cFiles) {
@@ -82,7 +90,24 @@ async function MDtoPDF(filepath, distpath) {
             { path: filepath },
             {
                 highlight_style: "nord",
-                css: "code { background: #2E3440 !important; }",
+                css: `body { font-family: "Noto Sans TC", sans-serif !important; } pre > code { background: #2E3440 !important; font-family: "MesloLGS NF", "Cascadia Code", "Ubuntu Mono", monospace !important; }`,
+                pdf_options: {
+                    format: "A4",
+                    orientation: "portrait",
+                    border: "1cm",
+                    border_color: "#2E3440",
+                    border_style: "solid",
+                    margin: "1cm",
+                    header: {
+                        height: "1cm",
+                        contents: "<span style='color: #2E3440; font-size: 10px;'>Homework 1</span>",
+                    },
+                    footer: {
+                        height: "1cm",
+                        contents: "<span style='color: #2E3440; font-size: 10px;'>Homework 1</span>",
+                    },
+                    printBackground: true,
+                },
             }
         );
         if (pdf) fs.writeFileSync(distpath, pdf.content);
