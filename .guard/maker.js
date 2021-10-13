@@ -2,40 +2,53 @@ const fs = require("fs");
 const path = require("path");
 const util = require("util");
 const exec = util.promisify(require("child_process").exec);
+const { findFilesByRegex } = require("./utils");
 const { mdToPdf } = require("md-to-pdf");
 
 async function make(homework) {
     log("=====");
     log(`Generating resources of ${homework}`);
-    const cFiles = fs.readdirSync(path.join(__dirname, "../", homework)).filter((f) => f.endsWith(".c"));
+    const cSources = findFilesByRegex(path.join(__dirname, "../", homework), /hw\d{4}\.c$/);
 
-    //#region Makefile
-    const makefile = createMakefile(cFiles);
+    //#region Create Makefile
+    log("Creating Makefile... ");
+    const makefile = createMakefile(cSources);
     fs.writeFileSync(path.join(__dirname, "../", homework, "Makefile"), makefile, "utf8");
+    log(`Makefile Created. \n---\n${makefile}\n---`);
     //#endregion
 
-    //#region README.md
-    if (!fs.existsSync(path.join(__dirname, "../", homework, "README.md")))
-        fs.writeFileSync(path.join(__dirname, "../", homework, "README.md"), createREADME(cFiles), "utf8");
-    //#endregion
-
-    //#region MD -> PDF
-    if (fs.existsSync(path.join(__dirname, "../", homework, "README.md")))
-        await MDtoPDF(path.join(__dirname, "../", homework, "README.md"), path.join(__dirname, "../", homework, "README.pdf"));
-    const mdFiles = fs.readdirSync(path.join(__dirname, "../", homework)).filter((f) => f.endsWith(".md"));
+    //#region Homwwork MD -> PDF
+    log("Converting Markdown to PDF... ");
+    const mdFiles = findFilesByRegex(path.join(__dirname, "../", homework), /hw\d{4}\.md$/);
     for (const mdFile of mdFiles) {
-        log(`Converting ${mdFile} to PDF`);
-        await MDtoPDF(path.join(__dirname, "../", homework, mdFile), path.join(__dirname, "../", homework, mdFile.replace(".md", ".pdf")));
+        log(`Converting ${path.basename(mdFile)} to PDF`);
+        await MDtoPDF(mdFile, mdFile.replace(/\.md$/, ".pdf"));
+    }
+    log(`Markdown to PDF Conversion Completed.`);
+    //#endregion
+
+    const hwPDFs = findFilesByRegex(path.join(__dirname, "../", homework), /hw\d{4}\.pdf$/);
+
+    //#region Create README.md and transform it to PDF
+    if (!fs.existsSync(path.join(__dirname, "../", homework, "README.md"))) {
+        log("Creating README.md... ");
+        const readme = createREADME(cSources, hwPDFs);
+        fs.writeFileSync(path.join(__dirname, "../", homework, "README.md"), readme, "utf8");
+        log(`README.md Created. \n---\n${readme}\n---`);
+    }
+    if (fs.existsSync(path.join(__dirname, "../", homework, "README.md"))) {
+        log("Converting README.md to PDF... ");
+        await MDtoPDF(path.join(__dirname, "../", homework, "README.md"), path.join(__dirname, "../", homework, "README.pdf"));
+        log(`README.md to PDF Conversion Completed.`);
     }
     //#endregion
 
-    const pdfFiles = fs.readdirSync(path.join(__dirname, "../", homework)).filter((f) => f.endsWith(".pdf"));
-
-    //#region  ZIP
+    //#region ZIP
     if (process.platform === "win32") {
         log("Windows does not support zip command.");
     } else {
-        const { stdout, stderr } = await exec(`cd ${homework} && zip ${homework}.zip README Makefile ${cFiles.join(" ")} ${pdfFiles.join(" ")}`);
+        const zipContents = ["README.pdf", "Makefile"].concat(cSources).concat(hwPDFs);
+        const { stdout, stderr } = await exec(`cd ${homework} && zip ${homework}.zip ${zipContents.join(" ")}`);
         log(`STDOUT: \n${stdout}`);
         if (stderr) log(`STDERR: \n${stderr}`);
         if (fs.existsSync(path.join(__dirname, "../", homework, `${homework}.zip`))) {
@@ -47,40 +60,48 @@ async function make(homework) {
     //#endregion
 }
 
-function createMakefile(cFiles) {
+function createMakefile(cSources) {
+    cSources = cSources.map((f) => path.basename(f));
     let makefile = "";
     makefile += "all: \n";
-    makefile += cFiles.map((f) => `\tgcc ${f} -o ${f.split(".")[0]}`).join("\n");
+    makefile += cSources.map((f) => `\tgcc ${f} -o ${f.split(".")[0]}`).join("\n");
     makefile += "\n";
     makefile += "clean: \n";
-    makefile += cFiles.map((f) => `\trm ${f.split(".")[0]}`).join("\n");
+    makefile += cSources.map((f) => `\trm ${f.split(".")[0]}`).join("\n");
     makefile += "\n";
-    log("Generated Makefile:\n---\n" + makefile + "\n---\n");
     return makefile;
 }
 
-function createREADME(cFiles) {
-    let readme =
-        `# 程式設計一 Homework 1
+function createREADME(cSources, hwPDFs) {
+    let readme = `# 程式設計一 Homework 1
 
-    Author: 師大資工 114 林振可 (41047029S)
-    
-    建議使用 Linux 系統執行。
-    
-    ## 1. 編譯程式
-    
-    請於此目錄執行：make`
-            .split("\n")
-            .map((line) => line.trim())
-            .join("\n") + "\n";
-    if (cFiles.length) {
-        readme += "\n";
-        readme += "## 2. 執行程式\n\n";
-        readme += "分別執行 " + cFiles.map((f) => `./${f.split(".")[0]}`).join(" | ");
+        作者：師大資工 114 林振可 (41047029S)
+
+        建議使用 Linux 系統執行。
+
+        ## 1. 編譯程式
+
+        請於此目錄執行：
+
+        \`\`\`bash
+        make
+        \`\`\`
+
+        \`make\` 應產生 ${cSources.length} 個可執行檔。`
+        .split("\n")
+        .map((line) => line.trim())
+        .join("\n");
+    readme += "\n";
+    if (cSources.length) {
+        readme += `\n## 2. 執行程式\n\n分別執行：\n\n`;
+        readme += cSources.map((f) => `\`\`\`bash\n./${path.basename(f).replace(".c", "")}\n\`\`\``).join("\n\n");
         readme += "\n";
     }
-
-    log("Generated README.md:\n---\n" + readme + "\n---\n");
+    if (hwPDFs.length) {
+        readme += `\n## 3. 手寫作業\n\n作業包含 ${hwPDFs.length} 個手寫作業。\n\n檔案：\n\n`;
+        readme += hwPDFs.map((f) => `* **${path.basename(f)}**`).join("\n");
+        readme += "\n";
+    }
     return readme;
 }
 
@@ -90,23 +111,23 @@ async function MDtoPDF(filepath, distpath) {
             { path: filepath },
             {
                 highlight_style: "nord",
-                css: `body { font-family: "Noto Sans TC", sans-serif !important; } pre > code { background: #2E3440 !important; font-family: "MesloLGS NF", "Cascadia Code", "Ubuntu Mono", monospace !important; }`,
+                css: `
+                body { font-family: "Noto Sans TC", sans-serif !important; background: #ECEFF4 !important; color: #2E3440 !important; } 
+                pre > code, code, code:not([class]) { color: #ECEFF4 !important; background: #2E3440 !important; font-family: "MesloLGS NF", "Cascadia Code", "Ubuntu Mono", monospace !important; }
+                td, th { border: 1px solid #D8DEE9 !important; }
+                thead > tr { background: #ECEFF4 !important; color: #2E3440 !important; }
+                tbody > tr:nth-child(odd) { background: #ECEFF4 !important; color: #2E3440 !important; }
+                tbody > tr:nth-child(even) { background: #E5E9F0 !important; color: #2E3440 !important; }
+                `,
                 pdf_options: {
                     format: "A4",
                     orientation: "portrait",
-                    border: "1cm",
-                    border_color: "#2E3440",
-                    border_style: "solid",
-                    margin: "1cm",
-                    header: {
-                        height: "1cm",
-                        contents: "<span style='color: #2E3440; font-size: 10px;'>Homework 1</span>",
-                    },
-                    footer: {
-                        height: "1cm",
-                        contents: "<span style='color: #2E3440; font-size: 10px;'>Homework 1</span>",
-                    },
+                    margin: "20mm",
+
+                    headerTemplate: `<img style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN88/7LfwAJbgPQ0oMMRAAAAABJRU5ErkJggg==">`,
+                    footerTemplate: `<span style="width: 100%; text-align: right; color: #2E3440; font-size: 10px; padding: 24px;">41047029S</span>`,
                     printBackground: true,
+                    displayHeaderFooter: true,
                 },
             }
         );
