@@ -47,7 +47,7 @@ async function make(homework) {
     if (process.platform === "win32") {
         log("Windows does not support zip command.");
     } else {
-        const zipContents = ["README.pdf", "Makefile"].concat(cSources).concat(hwPDFs);
+        const zipContents = ["README.pdf", "Makefile"].concat(cSources.map(path.basename)).concat(hwPDFs.map(path.basename));
         const { stdout, stderr } = await exec(`cd ${homework} && zip ${homework}.zip ${zipContents.join(" ")}`);
         log(`STDOUT: \n${stdout}`);
         if (stderr) log(`STDERR: \n${stderr}`);
