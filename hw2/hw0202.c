@@ -6,14 +6,14 @@ int main() {
 
     printf("First point (x,y): ");
     // Throw an ERROR if the input is not accepted
-    if (scanf("%ld, %ld", &x1, &y1) != 2) {
+    if (scanf("%lld, %lld", &x1, &y1) != 2) {
         printf("Invalid Input!\n");
         return 1;
     }
 
     printf("Second point (x,y): ");
     // Throw an ERROR if the input is not accepted
-    if (scanf("%ld, %ld", &x2, &y2) != 2) {
+    if (scanf("%lld, %lld", &x2, &y2) != 2) {
         printf("Invalid Input!\n");
         return 1;
     }

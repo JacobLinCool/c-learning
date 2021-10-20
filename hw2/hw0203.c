@@ -11,17 +11,20 @@ int64_t main() {
 
     printf("From: ");
     // Throw an ERROR if the input is not accepted
-    if (scanf("%ld/%ld/%ld %ld:%ld", &b_yy, &b_mm, &b_dd, &b_h, &b_m) != 5) {
+    if (scanf("%lld/%lld/%lld %lld:%lld", &b_yy, &b_mm, &b_dd, &b_h, &b_m) != 5) {
         printf("Invalid Input: Only Integers Allowed.\n");
         return 1;
     }
 
     printf("To: ");
     // Throw an ERROR if the input is not accepted
-    if (scanf("%ld/%ld/%ld %ld:%ld", &e_yy, &e_mm, &e_dd, &e_h, &e_m) != 5) {
+    if (scanf("%lld/%lld/%lld %lld:%lld", &e_yy, &e_mm, &e_dd, &e_h, &e_m) != 5) {
         printf("Invalid Input: Only Integers Allowed.\n");
         return 1;
     }
+
+    // printf("[DEBUG] %ld %ld %ld %ld %ld\n", b_yy, b_mm, b_dd, b_h, b_m);
+    // printf("[DEBUG] %ld %ld %ld %ld %ld\n", e_yy, e_mm, e_dd, e_h, e_m);
 
     // Throw an ERROR if the number is not valid
     if (validate_input(b_yy, b_mm, b_dd, b_h, b_m) || validate_input(e_yy, e_mm, e_dd, e_h, e_m)) {
@@ -32,12 +35,22 @@ int64_t main() {
     int64_t result = 0;
     int64_t total_days = calc_total_days(b_yy, b_mm, b_dd, e_yy, e_mm, e_dd);
     // printf("[DEBUG] total_days: %ld\n", total_days);
+
     int8_t weekday = calc_weekday(b_yy, b_mm, b_dd);
     // printf("[DEBUG] weekday: %u\n", weekday);
 
-    // if the start time and end time are in the same day
-    if (total_days == 0) {
-        if (weekday != 0 && weekday != 6) result += calc_single(b_h, b_m, e_h, e_m);
+    if (total_days < 0) {
+        printf("Invalid Input: End Date is earlier than Start Date.\n");
+        return 1;
+    }
+    else if (total_days == 0) {
+        // the start time and end time are in the same day
+        result = calc_single(b_h, b_m, e_h, e_m);
+        if (result < 0) {
+            printf("Invalid Input: End Time is earlier than Start Time.\n");
+            return 1;
+        }
+        if (weekday == 0 || weekday == 6) result = 0;
     }
     else {
         if (weekday != 0 && weekday != 6) result += calc_single(b_h, b_m, 24, 0);
@@ -49,14 +62,24 @@ int64_t main() {
         if (weekday != 0 && weekday != 6) result += calc_single(0, 0, e_h, e_m);
     }
 
+    // printf("[DEBUG] result: %ld\n", result);
     printf("Working Hours : %ld hours %ld mins.\n", result / 60, result % 60);
 
+    return 0;
+}
+
+// check if the input year is leap year. @return yes(1) or no(0)
+int64_t is_leap(int64_t yr) {
+    if (yr % 4 == 0 && yr % 100 != 0) return 1;
+    if (yr % 400 == 0) return 1;
     return 0;
 }
 
 // validate the input. @return valid(0) or invalid(1)
 int64_t validate_input(int64_t yy, int64_t mm, int64_t dd, int64_t h, int64_t m) {
     if (yy < 0 || mm < 0 || mm > 12 || dd < 0 || dd > 31 || h < 0 || h > 23 || m < 0 || m > 59) return 1;
+    if ((mm == 4 || mm == 6 || mm == 9 || mm == 11) && dd > 30) return 1;
+    if (mm == 2 && dd > is_leap(yy) + 28) return 1;
     return 0;
 }
 
@@ -71,17 +94,9 @@ int8_t calc_weekday(int64_t y, int64_t m, int64_t d) {
     // return weekday;
 }
 
-// check if the input year is leap year. @return yes(1) or no(0)
-int64_t is_leap(int64_t yr) {
-    if (yr % 4 == 0 && yr % 100 != 0) return 1;
-    if (yr % 400 == 0) return 1;
-    return 0;
-}
-
 // calculate the number of days between two dates in one specific year. @return days
 int64_t calc_days_in_year(int64_t yr, int64_t m1, int64_t d1, int64_t m2, int64_t d2) {
-    int64_t month[12] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
-    if (is_leap(yr)) month[1] = 29;
+    int64_t month[12] = { 31, 28 + is_leap(yr), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
     int64_t days = 0;
     for (int64_t i = m1; i < m2; i++) days += month[i];
@@ -94,7 +109,7 @@ int64_t calc_total_days(int64_t y1, int64_t m1, int64_t d1, int64_t y2, int64_t 
     int64_t days = 0;
 
     // years between y1 and y2
-    for (int64_t i = y1 + 1; i < y2; i++) days += is_leap(i) ? 366 : 365;
+    for (int64_t i = y1 + 1; i < y2; i++) days += is_leap(i) + 365;
 
     if (y1 == y2) {
         days += calc_days_in_year(y1, m1, d1, m2, d2);
@@ -119,5 +134,6 @@ int64_t calc_single(int64_t h1, int64_t m1, int64_t h2, int64_t m2) {
     else if (begin < 12 * 60) diff -= (end - 12 * 60);
     else if (end > 13 * 60 + 30) diff -= (13 * 60 - 30 - begin);
 
+    if (diff < 0) return -1;
     return diff;
 }
