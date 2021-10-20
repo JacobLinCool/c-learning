@@ -37,16 +37,16 @@ int64_t main() {
 
     // if the start time and end time are in the same day
     if (total_days == 0) {
-        if (weekday != 0 && weekday != 1) result += calc_single(b_h, b_m, e_h, e_m);
+        if (weekday != 0 && weekday != 6) result += calc_single(b_h, b_m, e_h, e_m);
     }
     else {
-        if (weekday != 0 && weekday != 1) result += calc_single(b_h, b_m, 24, 0);
+        if (weekday != 0 && weekday != 6) result += calc_single(b_h, b_m, 24, 0);
         for (int64_t i = 1; i < total_days; i++) {
             weekday = (weekday + 1) % 7;
-            if (weekday != 0 && weekday != 1) result += calc_single(0, 0, 24, 0);
+            if (weekday != 0 && weekday != 6) result += calc_single(0, 0, 24, 0);
         }
         weekday = (weekday + 1) % 7;
-        if (weekday != 0 && weekday != 1) result += calc_single(0, 0, e_h, e_m);
+        if (weekday != 0 && weekday != 6) result += calc_single(0, 0, e_h, e_m);
     }
 
     printf("Working Hours : %lld hours %lld mins.\n", result / 60, result % 60);
