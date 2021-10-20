@@ -60,8 +60,8 @@ int64_t validate_input(int64_t yy, int64_t mm, int64_t dd, int64_t h, int64_t m)
     return 0;
 }
 
-// calculate the first day's weekday (Thanks to the Internet)
-// Monday = 1, Tuesday = 2, Wednesday = 3, Thursday = 4, Friday = 5, Saturday = 6, Sunday = 0
+// calculate the first day's weekday (Thanks to the Internet) 
+// @return weekday: Monday = 1, Tuesday = 2, Wednesday = 3, Thursday = 4, Friday = 5, Saturday = 6, Sunday = 0
 int8_t calc_weekday(int64_t y, int64_t m, int64_t d) {
     return (d += m < 3 ? y-- : y - 2, 23 * m / 9 + d + 4 + y / 4 - y / 100 + y / 400) % 7;
     // m = (m == 1 || m == 2) ? m + 10 : m - 2;
