@@ -6,14 +6,14 @@ int main() {
 
     printf("First point (x,y): ");
     // Throw an ERROR if the input is not accepted
-    if (scanf("%lld, %lld", &x1, &y1) != 2) {
+    if (scanf("%ld, %ld", &x1, &y1) != 2) {
         printf("Invalid Input!\n");
         return 1;
     }
 
     printf("Second point (x,y): ");
     // Throw an ERROR if the input is not accepted
-    if (scanf("%lld, %lld", &x2, &y2) != 2) {
+    if (scanf("%ld, %ld", &x2, &y2) != 2) {
         printf("Invalid Input!\n");
         return 1;
     }
@@ -23,12 +23,12 @@ int main() {
 
     // Throw an ERROR if the area is not a positive number
     if (area <= 0) {
-        printf("Problematic Input: Area cannot be %lld\n", area);
+        printf("Problematic Input: Area cannot be %ld\n", area);
         return 1;
     }
 
-    printf("Perimeter --> %lld\n", perimeter);
-    printf("Area --> %lld\n", area);
+    printf("Perimeter --> %ld\n", perimeter);
+    printf("Area --> %ld\n", area);
 
     return 0;
 }

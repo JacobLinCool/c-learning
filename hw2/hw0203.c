@@ -11,14 +11,14 @@ int64_t main() {
 
     printf("From: ");
     // Throw an ERROR if the input is not accepted
-    if (scanf("%lld/%lld/%lld %lld:%lld", &b_yy, &b_mm, &b_dd, &b_h, &b_m) != 5) {
+    if (scanf("%ld/%ld/%ld %ld:%ld", &b_yy, &b_mm, &b_dd, &b_h, &b_m) != 5) {
         printf("Invalid Input: Only Integers Allowed.\n");
         return 1;
     }
 
     printf("To: ");
     // Throw an ERROR if the input is not accepted
-    if (scanf("%lld/%lld/%lld %lld:%lld", &e_yy, &e_mm, &e_dd, &e_h, &e_m) != 5) {
+    if (scanf("%ld/%ld/%ld %ld:%ld", &e_yy, &e_mm, &e_dd, &e_h, &e_m) != 5) {
         printf("Invalid Input: Only Integers Allowed.\n");
         return 1;
     }
@@ -31,7 +31,7 @@ int64_t main() {
 
     int64_t result = 0;
     int64_t total_days = calc_total_days(b_yy, b_mm, b_dd, e_yy, e_mm, e_dd);
-    // printf("[DEBUG] total_days: %lld\n", total_days);
+    // printf("[DEBUG] total_days: %ld\n", total_days);
     int8_t weekday = calc_weekday(b_yy, b_mm, b_dd);
     // printf("[DEBUG] weekday: %u\n", weekday);
 
@@ -49,7 +49,7 @@ int64_t main() {
         if (weekday != 0 && weekday != 6) result += calc_single(0, 0, e_h, e_m);
     }
 
-    printf("Working Hours : %lld hours %lld mins.\n", result / 60, result % 60);
+    printf("Working Hours : %ld hours %ld mins.\n", result / 60, result % 60);
 
     return 0;
 }

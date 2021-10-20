@@ -6,7 +6,7 @@ int main() {
     int64_t a, b, c;
     printf("Please enter a quadratic polynomial (a,b,c): ");
     // Throw an ERROR if the input is not accepted
-    if (scanf("%lld,%lld,%lld", &a, &b, &c) != 3) {
+    if (scanf("%ld,%ld,%ld", &a, &b, &c) != 3) {
         printf("Invalid Input!\n");
         return 1;
     }
