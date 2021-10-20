@@ -11,20 +11,20 @@ int64_t main() {
 
     printf("From: ");
     // Throw an ERROR if the input is not accepted
-    if (scanf("%lld/%lld/%lld %lld:%lld", &b_yy, &b_mm, &b_dd, &b_h, &b_m) != 5) {
+    if (scanf("%lli/%lli/%lli %lli:%lli", &b_yy, &b_mm, &b_dd, &b_h, &b_m) != 5) {
         printf("Invalid Input: Only Integers Allowed.\n");
         return 1;
     }
 
     printf("To: ");
     // Throw an ERROR if the input is not accepted
-    if (scanf("%lld/%lld/%lld %lld:%lld", &e_yy, &e_mm, &e_dd, &e_h, &e_m) != 5) {
+    if (scanf("%lli/%lli/%lli %lli:%lli", &e_yy, &e_mm, &e_dd, &e_h, &e_m) != 5) {
         printf("Invalid Input: Only Integers Allowed.\n");
         return 1;
     }
 
-    // printf("[DEBUG] %ld %ld %ld %ld %ld\n", b_yy, b_mm, b_dd, b_h, b_m);
-    // printf("[DEBUG] %ld %ld %ld %ld %ld\n", e_yy, e_mm, e_dd, e_h, e_m);
+    // printf("[DEBUG] %lli %lli %lli %lli %lli\n", b_yy, b_mm, b_dd, b_h, b_m);
+    // printf("[DEBUG] %lli %lli %lli %lli %lli\n", e_yy, e_mm, e_dd, e_h, e_m);
 
     // Throw an ERROR if the number is not valid
     if (validate_input(b_yy, b_mm, b_dd, b_h, b_m) || validate_input(e_yy, e_mm, e_dd, e_h, e_m)) {
@@ -34,7 +34,7 @@ int64_t main() {
 
     int64_t result = 0;
     int64_t total_days = calc_total_days(b_yy, b_mm, b_dd, e_yy, e_mm, e_dd);
-    // printf("[DEBUG] total_days: %ld\n", total_days);
+    // printf("[DEBUG] total_days: %lli\n", total_days);
 
     int8_t weekday = calc_weekday(b_yy, b_mm, b_dd);
     // printf("[DEBUG] weekday: %u\n", weekday);
@@ -62,8 +62,8 @@ int64_t main() {
         if (weekday != 0 && weekday != 6) result += calc_single(0, 0, e_h, e_m);
     }
 
-    // printf("[DEBUG] result: %ld\n", result);
-    printf("Working Hours : %ld hours %ld mins.\n", result / 60, result % 60);
+    // printf("[DEBUG] result: %lli\n", result);
+    printf("Working Hours : %lli hours %lli mins.\n", result / 60, result % 60);
 
     return 0;
 }
