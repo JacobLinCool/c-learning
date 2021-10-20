@@ -32,7 +32,7 @@ async function make(homework) {
     //#region Create README.md and transform it to PDF
     if (!fs.existsSync(path.join(__dirname, "../", homework, "README.md"))) {
         log("Creating README.md... ");
-        const readme = createREADME(cSources, hwPDFs);
+        const readme = createREADME(cSources, hwPDFs, homework.match(/hw(\d{1})/)[1]);
         fs.writeFileSync(path.join(__dirname, "../", homework, "README.md"), readme, "utf8");
         log(`README.md Created. \n---\n${readme}\n---`);
     }
@@ -72,8 +72,8 @@ function createMakefile(cSources) {
     return makefile;
 }
 
-function createREADME(cSources, hwPDFs) {
-    let readme = `# 程式設計一 Homework 1
+function createREADME(cSources, hwPDFs, hwID = "") {
+    let readme = `# 程式設計一 Homework ${hwID}
 
         作者：師大資工 114 林振可 (41047029S)
 
