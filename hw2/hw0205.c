@@ -26,7 +26,7 @@ int main() {
     }
 
     // calculate suit
-    for (int8_t i = 0; i < 13; i++) suit[cards[i] / 13]++;
+    for (int8_t i = 0; i < 13; i++) suit[(cards[i] - 1) / 13]++;
 
     printf("HCP: %d pts\n", hcp);
     printf("Suit: %d-%d-%d-%d\n", suit[0], suit[1], suit[2], suit[3]);
