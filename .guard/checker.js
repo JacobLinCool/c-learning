@@ -38,10 +38,18 @@ async function check(homework) {
 
 async function run(exe, input = "", output = "") {
     try {
-        const inputs = input.split("[[===]]");
+        const inputs = input.split("[[===]]").map((x) => x.replace(/\n/g, " "));
         const outputs = output.split("[[===]]");
         for (let i = 0; i < inputs.length; i++) {
-            const { stdout, stderr } = await exec(`${exe} <<< "${inputs[i]}"`, { shell: "/bin/bash" });
+            let stdout, stderr;
+            try {
+                const result = await exec(`${exe} <<< "${inputs[i]}"`, { shell: "/bin/bash" });
+                stdout = result.stdout;
+                stderr = result.stderr;
+            } catch (err) {
+                stdout = err.stdout.toString();
+                stderr = err.stderr.toString();
+            }
             if (
                 stdout
                     .split("\n")
@@ -54,10 +62,10 @@ async function run(exe, input = "", output = "") {
                     .filter((line) => line.length > 0)
                     .join("\n")
             ) {
-                throw new Error(`Output is not correct: ${inputs[i].replace(/\n/g, " ")}`);
+                throw new Error(`Output is not correct: ${inputs[i]}`);
             }
             if (stderr) throw new Error(stderr);
-            log("\033[1;92m" + `PASSED: [${exe}] ${inputs[i].replace(/\n/g, " ")}` + "\033[0m");
+            log("\033[1;92m" + `PASSED: [${exe}] ${inputs[i]}` + "\033[0m");
         }
     } catch (error) {
         log("\033[1;91m" + `ERROR: [${exe}]` + "\033[0m", error);
