@@ -96,11 +96,14 @@ int8_t calc_weekday(int32_t y, int32_t m, int32_t d) {
 
 // calculate the number of days between two dates in one specific year. @return days
 int32_t calc_days_in_year(int32_t yr, int32_t m1, int32_t d1, int32_t m2, int32_t d2) {
+    // printf("[DEBUG] m1: %d, d1: %d, m2: %d, d2: %d\n", m1, d1, m2, d2);
     int32_t month[12] = { 31, 28 + is_leap(yr), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+    // printf("[DEBUG] month[0]: %d, month[1]: %d, month[2]: %d, month[3]: %d, month[4]: %d, month[5]: %d, month[6]: %d, month[7]: %d, month[8]: %d, month[9]: %d, month[10]: %d, month[11]: %d\n", month[0], month[1], month[2], month[3], month[4], month[5], month[6], month[7], month[8], month[9], month[10], month[11]);
 
     int32_t days = 0;
-    for (int32_t i = m1; i < m2; i++) days += month[i];
+    for (int32_t i = m1; i < m2; i++) days += month[i - 1];
     days += d2 - d1;
+    // printf("[DEBUG] days: %d\n", days);
     return days;
 }
 
@@ -132,7 +135,8 @@ int32_t calc_single(int32_t h1, int32_t m1, int32_t h2, int32_t m2) {
 
     if (begin < 12 * 60 && end > 13 * 60 + 30) diff -= 90;
     else if (begin < 12 * 60) diff -= (end - 12 * 60);
-    else if (end > 13 * 60 + 30) diff -= (13 * 60 - 30 - begin);
+    else if (end > 13 * 60 + 30) diff -= (13 * 60 + 30 - begin);
+    else diff = 0;
 
     if (diff < 0) return -1;
     return diff;
