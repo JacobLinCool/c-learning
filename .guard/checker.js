@@ -41,6 +41,7 @@ async function run(exe, input = "", output = "") {
         const inputs = input.split("[[===]]").map((x) => x.replace(/\n/g, " "));
         const outputs = output.split("[[===]]");
         for (let i = 0; i < inputs.length; i++) {
+            let PST = Date.now();
             let stdout, stderr;
             try {
                 const result = await exec(`${exe} <<< "${inputs[i]}"`, { shell: "/bin/bash" });
@@ -50,6 +51,7 @@ async function run(exe, input = "", output = "") {
                 stdout = err.stdout.toString();
                 stderr = err.stderr.toString();
             }
+            let PFT = Date.now();
             if (
                 stdout
                     .split("\n")
@@ -65,7 +67,7 @@ async function run(exe, input = "", output = "") {
                 throw new Error(`Output is not correct: ${inputs[i]}`);
             }
             if (stderr) throw new Error(stderr);
-            log("\033[1;92m" + `PASSED: [${exe}] ${inputs[i]}` + "\033[0m");
+            log("\033[1;92m" + `PASSED (${PFT - PST}ms): [${exe}] ${inputs[i]}` + "\033[0m");
         }
     } catch (error) {
         log("\033[1;91m" + `ERROR: [${exe}]` + "\033[0m", error);
