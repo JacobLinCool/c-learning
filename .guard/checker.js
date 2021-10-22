@@ -38,7 +38,7 @@ async function check(homework) {
 
 async function run(exe, input = "", output = "") {
     try {
-        const inputs = input.split("[[===]]").map((x) => x.replace(/\n/g, " "));
+        const inputs = input.split("[[===]]").map((x) => x.replace(/\n/g, " ").trim());
         const outputs = output.split("[[===]]");
         for (let i = 0; i < inputs.length; i++) {
             let PST = Date.now();
