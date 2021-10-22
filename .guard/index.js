@@ -3,20 +3,29 @@ const path = require("path");
 const maker = require("./maker");
 const checker = require("./checker");
 
+const skipMake = process.argv.includes("--skip-make");
+const skipCheck = process.argv.includes("--skip-check");
+
 (async () => {
     const homeworks = getHomeworks();
-    for (const homework of homeworks) {
-        try {
-            await maker(homework);
-        } catch (err) {
-            console.error(err);
+
+    if (!skipMake) {
+        for (const homework of homeworks) {
+            try {
+                await maker(homework);
+            } catch (err) {
+                console.error(err);
+            }
         }
     }
-    for (const homework of homeworks) {
-        try {
-            await checker(homework);
-        } catch (err) {
-            console.error(err);
+
+    if (!skipCheck) {
+        for (const homework of homeworks) {
+            try {
+                await checker(homework);
+            } catch (err) {
+                console.error(err);
+            }
         }
     }
 })();
