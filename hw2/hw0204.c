@@ -8,22 +8,22 @@ double rate[3][4] = {
 };
 
 int32_t main() {
-    int64_t word_count, service_level, delivery_time;
+    int32_t word_count, service_level, delivery_time;
 
     printf("Word Count\n  Please enter the word count : ");
-    if (scanf("%ld", &word_count) != 1 || word_count < 0) {
+    if (scanf("%d", &word_count) != 1 || word_count < 0) {
         printf("  Invalid input.\n");
         return 1;
     }
 
     printf("Service Level\n  1) Advanced service\n  2) Standard service\n  3) Basic service\n  Your choice : ");
-    if (scanf("%ld", &service_level) != 1 || service_level < 1 || service_level > 3) {
+    if (scanf("%d", &service_level) != 1 || service_level < 1 || service_level > 3) {
         printf("Invalid input.\n");
         return 0;
     }
 
     printf("Delivery Time\n  1) Economic\n  2) Standard\n  3) Fast\n  4) Deadline\n  Your choice : ");
-    if (scanf("%ld", &delivery_time) != 1 || delivery_time < 1 || delivery_time > 4) {
+    if (scanf("%d", &delivery_time) != 1 || delivery_time < 1 || delivery_time > 4) {
         printf("Invalid input.\n");
         return 0;
     }
