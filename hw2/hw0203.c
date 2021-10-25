@@ -28,12 +28,12 @@ int32_t main() {
 
     // Throw an ERROR if the number is not valid
     if (validate_input(b_yy, b_mm, b_dd, b_h, b_m) || validate_input(e_yy, e_mm, e_dd, e_h, e_m)) {
-        printf("Invalid Input: Containing Invalid Number(s).\n");
+        printf("Invalid Input: Containing Invalid Date(s).\n");
         return 1;
     }
 
     int64_t result = 0;
-    int32_t total_days = calc_total_days(b_yy, b_mm, b_dd, e_yy, e_mm, e_dd);
+    int32_t total_days = calc_total_days(1, 1, 1, e_yy, e_mm, e_dd) - calc_total_days(1, 1, 1, b_yy, b_mm, b_dd);
     // printf("[DEBUG] total_days: %ld\n", total_days);
 
     int8_t weekday = calc_weekday(b_yy, b_mm, b_dd);
@@ -77,7 +77,7 @@ int32_t is_leap(int32_t yr) {
 
 // validate the input. @return valid(0) or invalid(1)
 int32_t validate_input(int32_t yy, int32_t mm, int32_t dd, int32_t h, int32_t m) {
-    if (yy < 0 || mm < 0 || mm > 12 || dd < 0 || dd > 31 || h < 0 || h > 24 || m < 0 || m > 59 || (h == 24 && m != 0)) return 1;
+    if (yy < 1 || mm < 0 || mm > 12 || dd < 0 || dd > 31 || h < 0 || h > 24 || m < 0 || m > 59 || (h == 24 && m != 0)) return 1;
     if ((mm == 4 || mm == 6 || mm == 9 || mm == 11) && dd > 30) return 1;
     if (mm == 2 && dd > is_leap(yy) + 28) return 1;
     return 0;
@@ -102,7 +102,7 @@ int32_t calc_days_in_year(int32_t yr, int32_t m1, int32_t d1, int32_t m2, int32_
 
     int32_t days = 0;
     for (int32_t i = m1; i < m2; i++) days += month[i - 1];
-    days += d2 - d1;
+    days += d2 - d1 + 1;
     // printf("[DEBUG] days: %d\n", days);
     return days;
 }
@@ -128,16 +128,18 @@ int32_t calc_total_days(int32_t y1, int32_t m1, int32_t d1, int32_t y2, int32_t 
 // calculate the working minutes of a single day @return minutes
 int32_t calc_single(int32_t h1, int32_t m1, int32_t h2, int32_t m2) {
     int32_t begin = h1 * 60 + m1, end = h2 * 60 + m2;
+
+    if (begin > 18 * 60 + 30 || end < 9 * 60) return 0;
     if (begin < 9 * 60) begin = 9 * 60;
     if (end > 18 * 60 + 30) end = 18 * 60 + 30;
 
     int32_t diff = end - begin;
+    if (end - begin < 0) return -1;
 
-    if (begin < 12 * 60 && end > 13 * 60 + 30) diff -= 90;
-    else if (begin < 12 * 60) diff -= (end - 12 * 60);
-    else if (end > 13 * 60 + 30) diff -= (13 * 60 + 30 - begin);
-    else diff = 0;
+    if (begin <= 12 * 60 && end >= 13 * 60 + 30) diff -= 90;
+    else if (begin <= 12 * 60 && end >= 12 * 60) diff -= (end - 12 * 60);
+    else if (begin <= 13 * 60 + 30 && end >= 13 * 60 + 30) diff -= (13 * 60 + 30 - begin);
+    else if (begin >= 12 * 60 && end <= 13 * 60 + 30) diff = 0;
 
-    if (diff < 0) return -1;
     return diff;
 }
