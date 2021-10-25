@@ -22,8 +22,8 @@ int main() {
     int64_t area = (((x1 - x2) >= 0 ? (x1 - x2) : (x2 - x1)) * ((y1 - y2) >= 0 ? (y1 - y2) : (y2 - y1)));
 
     // Throw an ERROR if there is a vertical or horizontal line
-    if (area == 0 && ((x1 != x2) ^ (y1 != y2))) {
-        printf("Problematic Input: Two Points Cannot Be In The Same Vertical or Horizontal Line.\n");
+    if (area == 0) {
+        printf("Problematic Input: Two Points Cannot Be The Same Point Or In The Same Line.\n");
         return 1;
     }
 
