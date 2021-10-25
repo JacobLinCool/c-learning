@@ -1,9 +1,0 @@
-First point (x,y): Second point (x,y): Perimeter --> 4
-Area --> 1
-[[===]]
-First point (x,y): Second point (x,y): Perimeter --> 0
-Area --> 0
-[[===]]
-First point (x,y): Second point (x,y): Problematic Input: Two Points Cannot Be In The Same Vertical or Horizontal Line.
-[[===]]
-First point (x,y): Second point (x,y): Problematic Input: Two Points Cannot Be In The Same Vertical or Horizontal Line.
