@@ -37,15 +37,15 @@ int main() {
     // Rule 1
     if (hcp >= 22) strcpy(choice, "2C");
     // Rule 2
-    else if (suit[0] >= 5 && 13 <= hcp && hcp <= 21) strcpy(choice, "1S");
-    else if (suit[1] >= 5 && 13 <= hcp && hcp <= 21) strcpy(choice, "1H");
+    else if (suit[0] >= 5 && (suit[0] >= suit[1] && suit[0] >= suit[2] && suit[0] >= suit[3]) && 13 <= hcp && hcp <= 21) strcpy(choice, "1S");
+    else if (suit[1] >= 5 && (suit[1] >= suit[0] && suit[1] >= suit[2] && suit[1] >= suit[3]) && 13 <= hcp && hcp <= 21) strcpy(choice, "1H");
     // Rule 3
     else if (16 <= hcp && hcp <= 18) strcpy(choice, "1NT");
     // Rule 4
     else if (20 <= hcp && hcp <= 21) strcpy(choice, "2NT");
     // Rule 5
-    else if (suit[2] >= 3 && 13 <= hcp && hcp <= 21) strcpy(choice, "1D");
-    else if (suit[3] >= 3 && 13 <= hcp && hcp <= 21) strcpy(choice, "1C");
+    else if (suit[2] >= 3 && (suit[2] >= suit[0] && suit[2] >= suit[1] && suit[2] >= suit[3]) && 13 <= hcp && hcp <= 21) strcpy(choice, "1D");
+    else if (suit[3] >= 3 && (suit[3] >= suit[0] && suit[3] >= suit[1] && suit[3] >= suit[2]) && 13 <= hcp && hcp <= 21) strcpy(choice, "1C");
     // Rule 6
     else if (suit[0] >= 7 && 10 <= hcp && hcp <= 12) strcpy(choice, "3S");
     else if (suit[1] >= 7 && 10 <= hcp && hcp <= 12) strcpy(choice, "3H");
@@ -55,7 +55,6 @@ int main() {
     else if (suit[0] >= 6 && 10 <= hcp && hcp <= 12) strcpy(choice, "2S");
     else if (suit[1] >= 6 && 10 <= hcp && hcp <= 12) strcpy(choice, "2H");
     else if (suit[2] >= 6 && 10 <= hcp && hcp <= 12) strcpy(choice, "2D");
-    else if (suit[3] >= 6 && 10 <= hcp && hcp <= 12) strcpy(choice, "2C");
 
     printf("The bidding choice : %s\n", choice);
 
