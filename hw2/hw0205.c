@@ -31,7 +31,7 @@ int main() {
     printf("HCP: %d pts\n", hcp);
     printf("Suit: %d-%d-%d-%d\n", suit[0], suit[1], suit[2], suit[3]);
 
-    // Apply Rule 8 is no other conditions are satisfied 
+    // Apply Rule 8 if there is no other conditions are satisfied 
     char choice[4] = "Pass";
 
     // Rule 1
