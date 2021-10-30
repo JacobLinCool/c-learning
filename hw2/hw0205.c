@@ -32,7 +32,7 @@ int main() {
     printf("Suit: %d-%d-%d-%d\n", suit[0], suit[1], suit[2], suit[3]);
 
     // Apply Rule 8 if there is no other conditions are satisfied 
-    char choice[4] = "Pass";
+    char choice[5];
 
     // Rule 1
     if (hcp >= 22) strcpy(choice, "2C");
@@ -55,6 +55,7 @@ int main() {
     else if (suit[0] >= 6 && 10 <= hcp && hcp <= 12) strcpy(choice, "2S");
     else if (suit[1] >= 6 && 10 <= hcp && hcp <= 12) strcpy(choice, "2H");
     else if (suit[2] >= 6 && 10 <= hcp && hcp <= 12) strcpy(choice, "2D");
+    else strcpy(choice, "Pass");
 
     printf("The bidding choice : %s\n", choice);
 
