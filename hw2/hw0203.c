@@ -83,7 +83,7 @@ int32_t is_leap(int32_t yr) {
 
 // validate the input. @return valid(0) or invalid(1)
 int32_t validate_input(int32_t yy, int32_t mm, int32_t dd, int32_t h, int32_t m) {
-    if (yy < 1 || mm < 0 || mm > 12 || dd < 0 || dd > 31 || h < 0 || h > 24 || m < 0 || m > 59 || (h == 24 && m != 0)) return 1;
+    if (yy < 1 || mm <= 0 || mm > 12 || dd <= 0 || dd > 31 || h < 0 || h > 24 || m < 0 || m > 59 || (h == 24 && m != 0)) return 1;
     if ((mm == 4 || mm == 6 || mm == 9 || mm == 11) && dd > 30) return 1;
     if (mm == 2 && dd > is_leap(yy) + 28) return 1;
     return 0;
