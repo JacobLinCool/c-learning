@@ -1,47 +1,96 @@
 // use testcase-gen package
 
+function p(n) {
+    return n.toString().padStart(2, "0");
+}
+
 const rules = [
     {
-        name: "Range: 10000 Years",
+        name: "Range: Same Day (2021/10/05)",
         generator: () => {
-            let start_year = Math.floor(Math.random() * 10000);
-            let start_month = Math.floor(Math.random() * 12) + 1;
-            let start_day = Math.floor(Math.random() * 28) + 1;
-            let start_hour = Math.floor(Math.random() * 24);
-            let start_minute = Math.floor(Math.random() * 60);
-            let end_year = start_year + Math.floor(Math.random() * 10000);
-            let end_month = Math.floor(Math.random() * 12);
-            let end_day = Math.floor(Math.random() * 28);
-            let end_hour = Math.floor(Math.random() * 24);
-            let end_minute = Math.floor(Math.random() * 60);
-            return `${start_year}/${start_month}/${start_day} ${start_hour.toString().padStart(2, "0")}:${start_minute
-                .toString()
-                .padStart(2, "0")}\n${end_year}/${end_month}/${end_day} ${end_hour.toString().padStart(2, "0")}:${end_minute.toString().padStart(2, "0")}`;
+            let sHour = Math.floor(Math.random() * 26);
+            let sMinute = Math.floor(Math.random() * 61);
+            let eHour = Math.floor(Math.random() * 26);
+            let eMinute = Math.floor(Math.random() * 61);
+            return `2021/10/05 ${p(sHour)}:${p(sMinute)}\n2021/10/05 ${p(eHour)}:${p(eMinute)}`;
         },
-        repeat: 1000,
+        repeat: 300,
+    },
+    {
+        name: "Range: 2 Days (2021/10/05,06)",
+        generator: () => {
+            let sDay = Math.floor(Math.random() * 33);
+            let sHour = Math.floor(Math.random() * 26);
+            let sMinute = Math.floor(Math.random() * 61);
+            let eDay = sDay + 1;
+            let eHour = Math.floor(Math.random() * 26);
+            let eMinute = Math.floor(Math.random() * 61);
+            return `2021/10/${p(sDay)} ${p(sHour)}:${p(sMinute)}\n2021/10/${p(eDay)} ${p(eHour)}:${p(eMinute)}`;
+        },
+        repeat: 300,
+    },
+    {
+        name: "Range: 3 ~ 7 Days (2021/10/05+)",
+        generator: () => {
+            let sDay = Math.floor(Math.random() * 33);
+            let sHour = Math.floor(Math.random() * 26);
+            let sMinute = Math.floor(Math.random() * 61);
+            let eDay = sDay + 3 + Math.floor(Math.random() * 5);
+            let eHour = Math.floor(Math.random() * 26);
+            let eMinute = Math.floor(Math.random() * 61);
+            return `2021/10/${p(sDay)} ${p(sHour)}:${p(sMinute)}\n2021/10/${p(eDay)} ${p(eHour)}:${p(eMinute)}`;
+        },
+        repeat: 300,
+    },
+    {
+        name: "Range: Same Month (2021/10)",
+        generator: () => {
+            let sDay = Math.floor(Math.random() * 33);
+            let sHour = Math.floor(Math.random() * 24);
+            let sMinute = Math.floor(Math.random() * 60);
+            let eDay = Math.floor(Math.random() * 33);
+            let eHour = Math.floor(Math.random() * 24);
+            let eMinute = Math.floor(Math.random() * 60);
+            return `2021/10/${p(sDay)} ${p(sHour)}:${p(sMinute)}\n2021/10/${p(eDay)} ${p(eHour)}:${p(eMinute)}`;
+        },
+        repeat: 300,
+    },
+    {
+        name: "Range: Same Year (2021)",
+        generator: () => {
+            const d = [31, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31, 31];
+            let sMonth = Math.floor(Math.random() * 14);
+            let sDay = Math.floor(Math.random() * d[sMonth]);
+            let sHour = Math.floor(Math.random() * 24);
+            let sMinute = Math.floor(Math.random() * 60);
+            let eMonth = Math.floor(Math.random() * 14);
+            let eDay = Math.floor(Math.random() * d[eMonth]);
+            let eHour = Math.floor(Math.random() * 24);
+            let eMinute = Math.floor(Math.random() * 60);
+            return `2021/${p(sMonth)}/${p(sDay)} ${p(sHour)}:${p(sMinute)}\n2021/${p(eMonth)}/${p(eDay)} ${p(eHour)}:${p(eMinute)}`;
+        },
+        repeat: 300,
     },
     {
         name: "Range: 1000000 Years",
         generator: () => {
-            let start_year = Math.floor(Math.random() * 1000000);
-            let start_month = Math.floor(Math.random() * 12) + 1;
-            let start_day = Math.floor(Math.random() * 28) + 1;
-            let start_hour = Math.floor(Math.random() * 24);
-            let start_minute = Math.floor(Math.random() * 60);
-            let end_year = start_year + Math.floor(Math.random() * 1000000);
-            let end_month = Math.floor(Math.random() * 12);
-            let end_day = Math.floor(Math.random() * 28);
-            let end_hour = Math.floor(Math.random() * 24);
-            let end_minute = Math.floor(Math.random() * 60);
-            return `${start_year}/${start_month}/${start_day} ${start_hour.toString().padStart(2, "0")}:${start_minute
-                .toString()
-                .padStart(2, "0")}\n${end_year}/${end_month}/${end_day} ${end_hour.toString().padStart(2, "0")}:${end_minute.toString().padStart(2, "0")}`;
+            let sYear = Math.floor(Math.random() * 1000000);
+            let sMonth = Math.floor(Math.random() * 12) + 1;
+            let sDay = Math.floor(Math.random() * 28) + 1;
+            let sHour = Math.floor(Math.random() * 24);
+            let sMinute = Math.floor(Math.random() * 60);
+            let eYear = sYear + Math.floor(Math.random() * 1000000);
+            let eMonth = Math.floor(Math.random() * 12);
+            let eDay = Math.floor(Math.random() * 28);
+            let eHour = Math.floor(Math.random() * 24);
+            let eMinute = Math.floor(Math.random() * 60);
+            return `${sYear}/${p(sMonth)}/${p(sDay)} ${p(sHour)}:${p(sMinute)}\n${eYear}/${p(eMonth)}/${p(eDay)} ${p(eHour)}:${p(eMinute)}`;
         },
         repeat: 1000,
     },
     {
         name: "Range: MAX (2147483647 Years)",
-        text: "1/1/1 00:00\n2147483647/12/31 23:59",
+        text: "1/01/01 00:00\n2147483647/12/31 23:59",
     },
 ];
 
