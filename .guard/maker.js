@@ -64,7 +64,7 @@ function createMakefile(cSources) {
     cSources = cSources.map((f) => path.basename(f));
     let makefile = "";
     makefile += "all: \n";
-    makefile += cSources.map((f) => `\tgcc ${f} -o ${f.split(".")[0]}`).join("\n");
+    makefile += cSources.map((f) => `\tgcc -static -lm -O2 -std=gnu99 ${f} -o ${f.split(".")[0]}`).join("\n");
     makefile += "\n";
     makefile += "clean: \n";
     makefile += cSources.map((f) => `\trm ${f.split(".")[0]}`).join("\n");
