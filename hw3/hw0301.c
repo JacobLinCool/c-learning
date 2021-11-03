@@ -4,7 +4,7 @@
 
 const int DEBUG = 0;
 
-int64_t calc_padding(int64_t n) {
+int32_t calc_padding(int64_t n) {
     int64_t padding = 1;
     while (n /= 10) padding++;
     return padding;
@@ -12,7 +12,7 @@ int64_t calc_padding(int64_t n) {
 
 void print_tornado(int64_t height, int64_t width) {
     int64_t max = height * width;
-    int64_t padding = calc_padding(max);
+    int32_t padding = calc_padding(max);
     int64_t tornado[height][width];
 
     if (DEBUG) printf("[DEBUG] size of tornado: %" PRId64 "\n", sizeof(tornado));
