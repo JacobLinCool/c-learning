@@ -12,7 +12,7 @@ const rules = [
     },
     {
         name: "3 ~ 100",
-        generator: () => g.next().value,
+        generator: () => g.next().value.toString(),
         repeat: 98,
     },
     {
