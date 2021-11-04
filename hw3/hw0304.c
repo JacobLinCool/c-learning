@@ -2,15 +2,13 @@
 #include <stdint.h>
 #include <inttypes.h>
 
-const int DEBUG = 1;
+const int DEBUG = 0;
 
-// calculate the exponential
-double calc_e(int64_t n) {
-    double e = 1.0, factorial = 1.0;
-    for (int64_t i = 1; i <= n; i++) {
-        factorial *= i;
-        e += 1.0 / factorial;
-    }
+// calculate the exponential, from bottom to top
+long double calc_e(int64_t n) {
+    long double e = 2 * n;
+    for (int64_t i = 2 * (n - 1); i >= 2; i -= 2) e = 1 + 1 / (1 + 1 / (i + 1 / e));
+    e += 1;
     return e;
 }
 
@@ -23,8 +21,8 @@ int main() {
         return 1;
     }
 
-    double e = calc_e(n);
-    printf("Answer: %.15g\n", e);
+    long double e = calc_e(n);
+    printf("Answer: %.19Lf\n", e);
 
     return 0;
 }
