@@ -36,6 +36,16 @@ const rules = [
         },
         repeat: 30,
     },
+    {
+        name: "Unacceptable result > MAX (= MAX + 1)",
+        generator: () => {
+            const sum = MAX + 1;
+            const a = Math.floor(Math.random() * sum);
+            const b = sum - a;
+            return Math.random() < 0.5 ? `${a} ${b}` : `${b} ${a}`;
+        },
+        repeat: 20,
+    },
 ];
 
 module.exports = rules;
