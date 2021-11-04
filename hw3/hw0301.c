@@ -22,17 +22,17 @@ void print_tornado(int64_t height, int64_t width) {
     for (int64_t i = 0; i < max; i++) {
         tornado[y][x] = i + 1;
 
-        // move to the next position
-        if (direction == 0) y++;
-        else if (direction == 1) x++;
-        else if (direction == 2) y--;
-        else if (direction == 3) x--;
-
         // check if we need to change the direction
         if (direction == 0 && y == height - level - 1) direction = 1;
         else if (direction == 1 && x == width - level - 1) direction = 2;
         else if (direction == 2 && y == level) direction = 3;
         else if (direction == 3 && x == level + 1) direction = 4;
+
+        // move to the next position
+        if (direction == 0 || direction == 4) y++;
+        else if (direction == 1) x++;
+        else if (direction == 2) y--;
+        else if (direction == 3) x--;
 
         // check if we need to upgrade the level
         if (direction == 4) {
