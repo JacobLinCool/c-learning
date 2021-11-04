@@ -41,6 +41,11 @@ int main() {
         return 1;
     }
 
+    if (data_size < 2) {
+        printf("Cannot predict anything by less than 2 data points. :(\n");
+        return 1;
+    }
+
     if (DEBUG) printf("[DEBUG] year_avg: %Lf, year_sum: %Lf\n", year_sum / data_size, year_sum);
     if (DEBUG) printf("[DEBUG] temperature_avg: %Lf, temperature_sum: %Lf\n", temperature_sum / data_size, temperature_sum);
 

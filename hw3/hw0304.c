@@ -21,6 +21,7 @@ int main() {
         return 1;
     }
 
+    if (n > 100) n = 100;
     long double e = calc_e(n);
     printf("Answer: %.19Lf\n", e);
 
