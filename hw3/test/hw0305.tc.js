@@ -15,8 +15,9 @@ const rules = [
         name: "2 ~ 1000 data points",
         generator: () => {
             const p = 2 + Math.floor(Math.random() * 999);
-            const str = "";
+            let str = "";
             for (let i = 0; i < p; i++) str += `${acceptable_year()} ${acceptable_temparature()} `;
+            return str;
         },
         repeat: 100,
     },
