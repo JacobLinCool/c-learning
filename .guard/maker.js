@@ -8,7 +8,7 @@ const { mdToPdf } = require("md-to-pdf");
 async function make(homework) {
     log("=====");
     log(`Generating resources of ${homework}`);
-    const cSources = findFilesByRegex(path.join(__dirname, "../", homework), /^hw.+?\.c$/);
+    const cSources = findFilesByRegex(path.join(__dirname, "../", homework), /hw.+?\.c$/);
 
     //#region Create Makefile
     log("Creating Makefile... ");
@@ -19,7 +19,7 @@ async function make(homework) {
 
     //#region Homwwork MD -> PDF
     log("Converting Markdown to PDF... ");
-    const mdFiles = findFilesByRegex(path.join(__dirname, "../", homework), /^hw.+?\.md$/);
+    const mdFiles = findFilesByRegex(path.join(__dirname, "../", homework), /hw.+?\.md$/);
     for (const mdFile of mdFiles) {
         log(`Converting ${path.basename(mdFile)} to PDF`);
         await MDtoPDF(mdFile, mdFile.replace(/\.md$/, ".pdf"));
@@ -27,7 +27,7 @@ async function make(homework) {
     log(`Markdown to PDF Conversion Completed.`);
     //#endregion
 
-    const hwPDFs = findFilesByRegex(path.join(__dirname, "../", homework), /^hw.+?\.pdf$/);
+    const hwPDFs = findFilesByRegex(path.join(__dirname, "../", homework), /hw.+?\.pdf$/);
 
     //#region Create README.md and transform it to PDF
     if (!fs.existsSync(path.join(__dirname, "../", homework, "README.md"))) {
