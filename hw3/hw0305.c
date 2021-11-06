@@ -64,6 +64,11 @@ int main() {
 
     if (DEBUG) printf("[DEBUG] a: %Lf, b: %Lf\n", a, b);
 
+    if (a != a || b != b) {
+        printf("We cannot build any model base on the provided data. :(\n");
+        return 1;
+    }
+
     // predict the temperature
     long double year_predict = 0;
     printf("Please enter the prediction year: ");
