@@ -73,7 +73,8 @@ int main() {
             return 1;
         }
 
-        if (state != S_FINAL) printf("S%" PRId8 "\n", state);
+        if (state == S_START) printf("Start\n");
+        else if (state != S_FINAL) printf("S%" PRId8 "\n", state);
     }
 
     printf("Final\n");
