@@ -64,7 +64,7 @@ function createMakefile(cSources) {
     cSources = cSources.map((f) => path.basename(f));
     let makefile = "";
     makefile += "all: \n";
-    makefile += cSources.map((f) => `\tgcc -static -lm -O2 -std=gnu99 ${f} -o ${f.split(".")[0]}`).join("\n");
+    makefile += cSources.map((f) => `\tgcc -static -lm -O2 -std=gnu99 -o ${f.replace(/\.c$/, "")} ${f}`).join("\n");
     makefile += "\n";
     makefile += "clean: \n";
     makefile += cSources.map((f) => `\trm ${f.split(".")[0]}`).join("\n");
@@ -94,7 +94,7 @@ function createREADME(cSources, hwPDFs, hwID = "") {
     readme += "\n";
     if (cSources.length) {
         readme += `\n## 2. 執行程式\n\n分別執行：\n\n`;
-        readme += cSources.map((f) => `\`\`\`bash\n./${path.basename(f).replace(".c", "")}\n\`\`\``).join("\n\n");
+        readme += cSources.map((f) => `\`\`\`bash\n./${path.basename(f).replace(/\.c$/, "")}\n\`\`\``).join("\n\n");
         readme += "\n";
     }
     if (hwPDFs.length) {
