@@ -1,48 +1,66 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <inttypes.h>
-#define MAX_SIZE 1000
+#define MAX_SIZE 2000
 
 const int DEBUG = 0;
 
-// return 2 if success, -1 if end, others if error
-int32_t read(int64_t* Pyear, long double* Ptemp) {
-    int32_t eaten = 0;
-    printf("Please enter the year: ");
-    eaten += scanf("%" SCNd64, Pyear) && (*Pyear >= 1900);
-    if (*Pyear == -1) return -1;
-    printf("Temperature: ");
-    eaten += scanf("%Lf", Ptemp) && (*Ptemp + (long double)273.15 >= 0);
-    return eaten;
+int64_t data_size = 0;
+long double year_sum = 0, temperature_sum = 0;
+long double years[MAX_SIZE], temperatures[MAX_SIZE];
 
+enum READ_STATE {
+    ACCEPTED_INPUT,
+    INVALID_INPUT,
+    DUPLICATE_INPUT,
+    GRACEFUL_EXIT
+};
+
+int32_t read(int64_t* Pyear, long double* Ptemp) {
+    printf("Please enter the year: ");
+    if (scanf("%" SCNd64, Pyear) != 1 || (*Pyear < 1900 && *Pyear != -1)) return INVALID_INPUT;
+    if (*Pyear == -1) return GRACEFUL_EXIT;
+
+    for (int64_t i = 0; i < data_size; i++) {
+        if (*Pyear == years[i]) return DUPLICATE_INPUT;
+    }
+
+    printf("Temperature: ");
+    if (scanf("%Lf", Ptemp) != 1 || *Ptemp + 273.15 < 0) return INVALID_INPUT;
+
+    return ACCEPTED_INPUT;
 }
 
 int main() {
-    int64_t data_size = 0;
-    long double year_sum = 0, temperature_sum = 0;
-    long double years[MAX_SIZE], temperatures[MAX_SIZE];
-
     int64_t year = 0;
     long double temperature = 0;
-    int32_t state = read(&year, &temperature);
 
-    while (state == 2) {
+    int32_t state = read(&year, &temperature);
+    while (state == ACCEPTED_INPUT) {
         year_sum += year;
         temperature_sum += temperature;
+
         years[data_size] = year;
         temperatures[data_size] = temperature;
         data_size++;
+
         if (DEBUG) printf("[DEBUG] data_size: %" PRId64 ", year_sum: %Lf, temperature_sum: %Lf\n", data_size, year_sum, temperature_sum);
+
         state = read(&year, &temperature);
     }
 
-    if (state != -1) {
+    if (state == INVALID_INPUT) {
         printf("Invalid Input!\n");
         return 1;
     }
 
+    if (state == DUPLICATE_INPUT) {
+        printf("Duplicate Input!\n");
+        return 1;
+    }
+
     if (data_size < 2) {
-        printf("Cannot predict anything by less than 2 data points. :(\n");
+        printf("The amount of data is not enough to predict.\n");
         return 1;
     }
 
@@ -72,8 +90,12 @@ int main() {
     // predict the temperature
     long double year_predict = 0;
     printf("Please enter the prediction year: ");
-    if (scanf("%Lf", &year_predict) && (year_predict >= 1900)) printf("Temperature: %Lf\n", a * year_predict + b);
-    else printf("Invalid Input!\n");
+    if (scanf("%Lf", &year_predict) != 1 || (year_predict < 1900)) {
+        printf("Invalid Input!\n");
+        return 1;
+    }
+
+    printf("Temperature: %.4Lf\n", a * year_predict + b);
 
     return 0;
 }
