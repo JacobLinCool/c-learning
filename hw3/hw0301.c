@@ -55,7 +55,7 @@ int64_t get_num(int64_t y, int64_t x) {
     int64_t h = height - 2 * level, w = width - 2 * level;
     int64_t last_num = height * width - h * w;
 
-    if (h == 1 || w == 1) return last_num + 1 + (y - level) + (x - level);
+    if (h == 1 || w == 1) num = last_num + 1 + (y - level) + (x - level);
     else if ((y == level && x != level) || x == width - level - 1) num = last_num + (h + w - 2) + (height - level - y) + (width - level - x - 1);
     else num = last_num + (y - level + 1) + (x - level);
 
