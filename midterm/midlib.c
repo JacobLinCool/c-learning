@@ -1,8 +1,5 @@
 // Copyright © 2021 JacobLinCool. All rights reserved.
-#include <stdio.h>
-#include <stdint.h>
-#include <inttypes.h>
-#include <math.h>
+#include "midlib.h"
 
 long double ABS(long double x) {
     return x < 0 ? -x : x;
@@ -11,17 +8,17 @@ long double ABS(long double x) {
 /**
  * Use x & y to construct a Point.
  */
-typedef struct Point {
-    long double x;
-    long double y;
-} Point;
+ // typedef struct Point {
+ //     long double x;
+ //     long double y;
+ // } Point;
 
-/**
- * @brief Get the slope of two points.
- * @param point_1
- * @param point_2
- * @return long double - the slope of the line, nan if the line is vertical.
- */
+ /**
+  * @brief Get the slope of two points.
+  * @param point_1
+  * @param point_2
+  * @return long double - the slope of the line, nan if the line is vertical.
+  */
 long double get_slope(Point p1, Point p2) {
     if (p1.x == p2.x) return NAN;
     return (p2.y - p1.y) / (p2.x - p1.x);
@@ -30,21 +27,21 @@ long double get_slope(Point p1, Point p2) {
 /**
  * Use 2 Points to construct a Line.
  */
-typedef struct Line {
-    struct Point p1;
-    struct Point p2;
-    long double slope;
-    long double x_intercept;
-    long double y_intercept;
-} Line;
+ // typedef struct Line {
+ //     struct Point p1;
+ //     struct Point p2;
+ //     long double slope;
+ //     long double x_intercept;
+ //     long double y_intercept;
+ // } Line;
 
-/**
- * @brief Create New Line By Two Points.
- *
- * @param point_1
- * @param point_2
- * @return Line
- */
+ /**
+  * @brief Create New Line By Two Points.
+  *
+  * @param point_1
+  * @param point_2
+  * @return Line
+  */
 Line newLine(Point p1, Point p2) {
     Line line;
     line.p1 = p1;
@@ -132,40 +129,4 @@ long double get_distance_between_lines(Line l1, Line l2) {
     else {
         return ABS(l1.y_intercept - l2.y_intercept) / (1 + l1.slope * l1.slope);
     }
-}
-
-int main() {
-    Point p1 = { 1, 1 }, p2 = { 0.9, 0 };
-    Line l1 = newLine(p1, p2);
-
-    Point p3 = { 100, 0.5 }, p4 = { 100, -1000 };
-    Line l2 = newLine(p3, p4);
-
-    printf("P1: (%Lf, %Lf)\n", p1.x, p1.y);
-    printf("P2: (%Lf, %Lf)\n", p2.x, p2.y);
-    printf("P3: (%Lf, %Lf)\n", p3.x, p3.y);
-    printf("P4: (%Lf, %Lf)\n", p4.x, p4.y);
-
-    printf("=====\n");
-    printf("Line 1:\n");
-    printf("Slope: %Lf\n", l1.slope);
-    printf("X Intercept: %Lf\n", l1.x_intercept);
-    printf("Y Intercept: %Lf\n", l1.y_intercept);
-    printf("=====\n");
-    printf("Line 2:\n");
-    printf("Slope: %Lf\n", l2.slope);
-    printf("X Intercept: %Lf\n", l2.x_intercept);
-    printf("Y Intercept: %Lf\n", l2.y_intercept);
-    printf("=====\n");
-    printf("Is Parallel: %d\n", is_parallel(l1, l2));
-    printf("Is Same: %d\n", is_same_line(l1, l2));
-    printf("=====\n");
-    printf("Intersection Point:\n");
-    Point p = get_intersection_point(l1, l2);
-    printf("(%Lf, %Lf)\n", p.x, p.y);
-    printf("=====\n");
-    printf("Distance: %Lf\n", get_distance_between_lines(l1, l2));
-
-
-    return 0;
 }

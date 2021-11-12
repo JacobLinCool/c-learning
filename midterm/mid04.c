@@ -1,4 +1,4 @@
-// Computer Programming I - Midterm Exam #1
+// Computer Programming I - Midterm Exam #4
 // Copyright © 2021 JacobLinCool. All rights reserved.
 #include <stdio.h>
 #include <stdint.h>

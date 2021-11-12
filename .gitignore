@@ -20,4 +20,17 @@ dist/
 
 **/*.pdf
 
+!midterm/*.pdf
+
+!midterm/Makefile
+
+!midterm/*.zip
+
+!final/*.pdf
+
+!final/Makefile
+
+!final/*.zip
+
 **/Makefile
+

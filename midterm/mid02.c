@@ -1,9 +1,10 @@
-// Computer Programming I - Midterm Exam #1
+// Computer Programming I - Midterm Exam #2
 // Copyright © 2021 JacobLinCool. All rights reserved.
 #include <stdio.h>
 #include <stdint.h>
 #include <inttypes.h>
 #include <math.h>
+#include "midlib.h"
 
 // Input Receiver
 enum INPUT_STATE {
@@ -34,21 +35,16 @@ int64_t ask(char question[], long double* input) {
 
 // Main Proccess
 int main() {
-    long double input = 0;
 
-    int64_t state = ask("Enter a number: ", &input);
-    while (state != GRACEFUL_EXIT) {
-        if (state == INVALID_INPUT) {
-            printf("Invalid input! Recieved: %" PRId64 "\n", (int64_t)input);
-            return 1;
-        }
+    Point p1, p2;
+    p1.x = 0;
+    p1.y = 0;
+    p2.x = 1000;
+    p2.y = 1000;
 
-        printf("%" PRId64 "\n", (int64_t)(input * input));
+    Line l = newLine(p1, p2);
 
-        state = ask("Enter a number: ", &input);
-    }
-
-    printf("Goodbye!\n");
+    printf("%Lf\n", l.slope);
 
     return 0;
 }
