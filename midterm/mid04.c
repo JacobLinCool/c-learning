@@ -18,46 +18,7 @@ int64_t movement = 0, x = 80, y = 20;
 
 char map[20][80];
 
-void setup() {
-    printf("Your movement (3-6): ");
-    while (scanf("%" SCNd64, &movement) != 1 || movement < 3 || movement > 6) {
-        printf("Invalid input!!\n");
-        printf("Your movement (3-6): ");
-    }
-    printf("Enemy 1 movement (3-6): ");
-    while (scanf("%" SCNd64, &enemy1.movement) != 1 || enemy1.movement < 3 || enemy1.movement > 6) {
-        printf("Invalid input!!\n");
-        printf("Enemy 1 movement (3-6): ");
-    }
-    printf("Enemy 1 vision (2-10): ");
-    while (scanf("%" SCNd64, &enemy1.vision) != 1 || enemy1.vision < 2 || enemy1.vision > 10) {
-        printf("Invalid input!!\n");
-        printf("Enemy 1 vision (2-10): ");
-    }
-    printf("Enemy 1 location (2-80): ");
-    while (scanf("%" SCNd64, &enemy1.x) != 1 || enemy1.x < 2 || enemy1.x > 80) {
-        printf("Invalid input!!\n");
-        printf("Enemy 1 location (2-80): ");
-    }
-
-    printf("Enemy 2 movement (3-6): ");
-    while (scanf("%" SCNd64, &enemy2.movement) != 1 || enemy2.movement < 3 || enemy2.movement > 6) {
-        printf("Invalid input!!\n");
-        printf("Enemy 2 movement (3-6): ");
-    }
-    printf("Enemy 2 vision (2-10): ");
-    while (scanf("%" SCNd64, &enemy2.vision) != 1 || enemy2.vision < 2 || enemy2.vision > 10) {
-        printf("Invalid input!!\n");
-        printf("Enemy 2 vision (2-10): ");
-    }
-    printf("Enemy 2 location (2-20): ");
-    while (scanf("%" SCNd64, &enemy2.y) != 1 || enemy2.y < 2 || enemy2.y > 20) {
-        printf("Invalid input!!\n");
-        printf("Enemy 2 location (2-20): ");
-    }
-
-
-
+void build_map() {
     for (int64_t i = 0; i < 20; i++) {
         for (int64_t j = 0; j < 80; j++) {
             map[i][j] = ' ';
@@ -95,7 +56,47 @@ void setup() {
     map[0][0] = 'S';
 }
 
+void setup() {
+    printf("Your movement (3-6): ");
+    while (scanf("%" SCNd64, &movement) != 1 || movement < 3 || movement > 6) {
+        printf("Invalid input!!\n");
+        printf("Your movement (3-6): ");
+    }
+    printf("Enemy 1 movement (3-6): ");
+    while (scanf("%" SCNd64, &enemy1.movement) != 1 || enemy1.movement < 3 || enemy1.movement > 6) {
+        printf("Invalid input!!\n");
+        printf("Enemy 1 movement (3-6): ");
+    }
+    printf("Enemy 1 vision (2-10): ");
+    while (scanf("%" SCNd64, &enemy1.vision) != 1 || enemy1.vision < 2 || enemy1.vision > 10) {
+        printf("Invalid input!!\n");
+        printf("Enemy 1 vision (2-10): ");
+    }
+    printf("Enemy 1 location (2-80): ");
+    while (scanf("%" SCNd64, &enemy1.x) != 1 || enemy1.x < 2 || enemy1.x > 80) {
+        printf("Invalid input!!\n");
+        printf("Enemy 1 location (2-80): ");
+    }
+
+    printf("Enemy 2 movement (3-6): ");
+    while (scanf("%" SCNd64, &enemy2.movement) != 1 || enemy2.movement < 3 || enemy2.movement > 6) {
+        printf("Invalid input!!\n");
+        printf("Enemy 2 movement (3-6): ");
+    }
+    printf("Enemy 2 vision (2-10): ");
+    while (scanf("%" SCNd64, &enemy2.vision) != 1 || enemy2.vision < 2 || enemy2.vision > 10) {
+        printf("Invalid input!!\n");
+        printf("Enemy 2 vision (2-10): ");
+    }
+    printf("Enemy 2 location (2-20): ");
+    while (scanf("%" SCNd64, &enemy2.y) != 1 || enemy2.y < 2 || enemy2.y > 20) {
+        printf("Invalid input!!\n");
+        printf("Enemy 2 location (2-20): ");
+    }
+}
+
 void print_map() {
+    build_map();
     for (int32_t i = 0; i < 82; i++) printf("-");
     printf("\n");
 
@@ -111,10 +112,53 @@ void print_map() {
     printf("\n");
 }
 
+void player_control() {
+    int64_t move = 0;
+    printf("Move: (1) Up (2) Down? ");
+    while (scanf("%" SCNd64, &move) != 1 || move < 1 || move > 2) {
+        printf("Invalid input!!\n");
+        printf("Move: (1) Up (2) Down? ");
+    }
+
+    int64_t range = -1;
+    printf("Range (0-%" PRId64 ")? ", movement);
+    while (scanf("%" SCNd64, &range) != 1 || range < 0 || range > movement || y + (move == 2 ? range : -range) > 20 || y + (move == 2 ? range : -range) < 1) {
+        printf("Invalid input!!\n");
+        printf("Range (0-%" PRId64 ")? ", movement);
+    }
+
+    int64_t move2 = 0;
+    printf("Move: (1) Left (2) Right? ");
+    while (scanf("%" SCNd64, &move2) != 1 || move2 < 1 || move2 > 2) {
+        printf("Invalid input!!\n");
+        printf("Move: (1) Left (2) Right? ");
+    }
+
+    int64_t range2 = -1;
+    printf("Range (0-%" PRId64 ")? ", movement);
+    while (scanf("%" SCNd64, &range2) != 1 || range2 < 0 || range2 > movement || x + (move2 == 2 ? range2 : -range2) > 80 || x + (move2 == 2 ? range2 : -range2) < 1) {
+        printf("Invalid input!!\n");
+        printf("Range (0-%" PRId64 ")? ", movement);
+    }
+
+    y = y + (move == 2 ? range : -range);
+    x = x + (move2 == 2 ? range2 : -range2);
+}
+
 // Main Proccess
 int main() {
     setup();
     print_map();
+
+    while (1) {
+        player_control();
+        if (y == 1 && x == 1) {
+            printf("Mission Complete!\n");
+            return 0;
+        }
+        print_map();
+    }
+
 
     return 0;
 }
