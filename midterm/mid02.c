@@ -57,7 +57,7 @@ int main() {
             printf("Invalid input! Recieved: %" PRId64 "\n", input);
         }
 
-        if (check_state == 3) {
+        if (check_state >= 6) {
             state = ask("Please enter the integer: ", &input);
             continue;
         }
@@ -72,14 +72,8 @@ int main() {
             else if (checker_2(input) == 1) {
                 position = input_count;
                 start_integer = input;
-                check_state = 1;
+                check_state = 2;
                 prev_checker = 2;
-            }
-            else if (checker_3(input) == 1) {
-                position = input_count;
-                start_integer = input;
-                check_state = 1;
-                prev_checker = 3;
             }
         }
         else {
@@ -113,6 +107,11 @@ int main() {
                     check_state++;
                     prev_checker = 1;
                 }
+                else if (checker_2(input) == 1) {
+                    check_state++;
+                    check_state++;
+                    prev_checker = 2;
+                }
                 else {
                     check_state = 0;
                     prev_checker = 0;
@@ -125,7 +124,7 @@ int main() {
         state = ask("Please enter the integer: ", &input);
     }
 
-    if (check_state == 3) printf("The first matching series is at position %" PRId64 ", integer %" PRId64 ".\n", position, start_integer);
+    if (check_state >= 6) printf("The first matching series is at position %" PRId64 ", integer %" PRId64 ".\n", position, start_integer);
     else printf("None\n");
     return 0;
 }
