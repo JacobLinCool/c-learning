@@ -4,51 +4,56 @@
 #include <stdint.h>
 #include <inttypes.h>
 #include <math.h>
+#include <stdlib.h>
 
-// Input Receiver
-enum INPUT_STATE {
-    ACCEPTED_INPUT, // Accpeted!
-    INVALID_INPUT, // Invalid!
-    GRACEFUL_EXIT // Maybe -1 or something?
-};
-
-int64_t validate_input(long double input) {
-    if (input <= 0) {
-        return 0;
-    }
-    return 1;
-}
-
-int64_t ask(char question[], long double* input) {
-    printf("%s", question);
-    int32_t success = scanf("%Lf", input);
-    if (*input == -1) {
-        return GRACEFUL_EXIT;
-    }
-    else if (success != 1 || validate_input(*input) == 0) {
-        return INVALID_INPUT;
-    }
-    return ACCEPTED_INPUT;
-}
-
+typedef struct Layer {
+    double refractive_index;
+    double height;
+} Layer;
 
 // Main Proccess
 int main() {
-    long double input = 0;
+    double incidence_angle = -1.0;
+    printf("Incidence angle: ");
+    if (scanf("%lf", &incidence_angle) != 1 || incidence_angle < 0 || incidence_angle > 90) {
+        printf("Error: Invalid Incidence Angle! Recieved: %lf\n", incidence_angle);
+        return 1;
+    }
+    incidence_angle = incidence_angle * M_PI / 180;
 
-    int64_t state = ask("Enter a number: ", &input);
-    while (state != GRACEFUL_EXIT) {
-        if (state == INVALID_INPUT) {
-            printf("Invalid input! Recieved: %" PRId64 "\n", (int64_t)input);
-            return 1;
-        }
-
-        printf("%" PRId64 "\n", (int64_t)(input * input));
-
-        state = ask("Enter a number: ", &input);
+    int64_t layer_count = 0;
+    printf("How many layers: ");
+    if (scanf("%" SCNd64, &layer_count) != 1 || layer_count < 1) {
+        printf("Error: Invalid Number of Layers! Recieved: %" PRId64 "\n", layer_count);
+        return 1;
     }
 
-    printf("Goodbye!\n");
+    Layer* layers = malloc(sizeof(Layer) * layer_count);
+
+    for (int64_t i = 0; i < layer_count; i++) {
+        printf("Layer %" PRId64 "'s refractive index: ", i + 1);
+        if (scanf("%lf", &layers[i].refractive_index) != 1 || layers[i].refractive_index < 1) {
+            printf("Error: Invalid Refractive Index! Recieved: %lf\n", layers[i].refractive_index);
+            return 1;
+        }
+        printf("Layer %" PRId64 "'s height: ", i + 1);
+        if (scanf("%lf", &layers[i].height) != 1 || layers[i].height <= 0) {
+            printf("Error: Invalid Layer Height! Recieved: %lf\n", layers[i].height);
+            return 1;
+        }
+    }
+
+    double shift = 0.0;
+
+    for (int64_t i = 0; i < layer_count; i++) {
+        shift += layers[i].height * tan(incidence_angle);
+        if (i != layer_count - 1) {
+            incidence_angle = asin((layers[i].refractive_index / layers[i + 1].refractive_index) * sin(incidence_angle));
+        }
+        // printf("[DEBUG] Layer %" PRId64 ": Refractive Index: %lf, Height: %lf, Shift: %lf, Out-Angle: %lf\n", i, layers[i].refractive_index, layers[i].height, shift, incidence_angle);
+    }
+
+    printf("The shift: %lg\n", shift);
 
     return 0;
 }

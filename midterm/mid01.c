@@ -12,43 +12,70 @@ enum INPUT_STATE {
     GRACEFUL_EXIT // Maybe -1 or something?
 };
 
-int64_t validate_input(long double input) {
-    if (input <= 0) {
+int64_t validate_input(int64_t input) {
+    if (input < 0 || input > INT32_MAX) {
         return 0;
     }
     return 1;
 }
 
-int64_t ask(char question[], long double* input) {
+int64_t ask(char question[], int64_t* input) {
     printf("%s", question);
-    int32_t success = scanf("%Lf", input);
-    if (*input == -1) {
-        return GRACEFUL_EXIT;
-    }
-    else if (success != 1 || validate_input(*input) == 0) {
+    int32_t success = scanf("%" SCNd64, input);
+    if (success != 1 || validate_input(*input) == 0) {
         return INVALID_INPUT;
     }
     return ACCEPTED_INPUT;
 }
 
+// Utils
+int64_t calc_digit(int64_t n) {
+    int64_t digit = 1;
+    while (n /= 10) digit++;
+    return digit;
+}
 
 // Main Proccess
 int main() {
-    long double input = 0;
+    int64_t a = 0, b = 0;
 
-    int64_t state = ask("Enter a number: ", &input);
-    while (state != GRACEFUL_EXIT) {
-        if (state == INVALID_INPUT) {
-            printf("Invalid input! Recieved: %" PRId64 "\n", (int64_t)input);
-            return 1;
-        }
-
-        printf("%" PRId64 "\n", (int64_t)(input * input));
-
-        state = ask("Enter a number: ", &input);
+    int64_t state_a = ask("Please enter the 1st integer: ", &a);
+    if (state_a == INVALID_INPUT) {
+        printf("Invalid input! Recieved: %" PRId64 "\n", a);
+        return 1;
+    }
+    int64_t state_b = ask("Please enter the 2nd integer: ", &b);
+    if (state_b == INVALID_INPUT) {
+        printf("Invalid input! Recieved: %" PRId64 "\n", b);
+        return 1;
     }
 
-    printf("Goodbye!\n");
+    int64_t digit_a = calc_digit(a), digit_b = calc_digit(b);
+
+    for (int64_t i = digit_a + digit_b; i > 0; i--) {
+        if (digit_a == 0) {
+            printf("%" PRId64, b % 10);
+            b /= 10;
+        }
+        else if (digit_b == 0) {
+            printf("%" PRId64, a % 10);
+            a /= 10;
+        }
+        else {
+            int64_t a_last = a % 10, b_last = b % 10;
+
+            if (a_last > b_last) {
+                printf("%" PRId64, a_last);
+                a /= 10;
+            }
+            else {
+                printf("%" PRId64, b_last);
+                b /= 10;
+            }
+        }
+    }
+
+    printf("\n");
 
     return 0;
 }
