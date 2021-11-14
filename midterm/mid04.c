@@ -10,11 +10,12 @@ typedef struct Enemy {
     int64_t vision;
     int64_t x;
     int64_t y;
+    int64_t direction;
 } Enemy;
 
-Enemy enemy1 = { 1, 1, 1, 1 }, enemy2 = { 1, 1, 1, 1 };
+Enemy enemy1 = { 1, 1, 1, 1, 0 }, enemy2 = { 1, 1, 1, 1, 0 };
 
-int64_t movement = 0, x = 80, y = 20;
+int64_t movement = 0, x = 80, y = 20, die = 0;
 
 char map[20][80];
 
@@ -27,10 +28,13 @@ void build_map() {
 
     map[enemy1.y - 1][enemy1.x - 1] = '1';
     for (int64_t i = 1; i <= enemy1.vision; i++) {
-        if (enemy1.y + i <= 20) {
+        if (enemy1.y + (enemy1.direction ? -i : i) <= 20) {
             for (int64_t j = enemy1.x - i + 1; j <= enemy1.x + i - 1; j++) {
                 if (j <= 80 && j >= 1) {
-                    map[enemy1.y + i - 1][j - 1] = '*';
+                    if (map[enemy1.y + (enemy1.direction ? -i : i) - 1][j - 1] == 'P') {
+                        die = 1;
+                    }
+                    map[enemy1.y + (enemy1.direction ? -i : i) - 1][j - 1] = '*';
                 }
             }
         }
@@ -41,10 +45,13 @@ void build_map() {
 
     map[enemy2.y - 1][enemy2.x - 1] = '2';
     for (int64_t i = 1; i <= enemy2.vision; i++) {
-        if (enemy2.x + i <= 80) {
+        if (enemy2.x + (enemy2.direction ? -i : i) <= 80) {
             for (int64_t j = enemy2.y - i + 1; j <= enemy2.y + i - 1; j++) {
                 if (j <= 20 && j >= 1) {
-                    map[j - 1][enemy2.x + i - 1] = '*';
+                    if (map[j - 1][enemy2.x + (enemy2.direction ? -i : i) - 1] == 'P') {
+                        die = 1;
+                    }
+                    map[j - 1][enemy2.x + (enemy2.direction ? -i : i) - 1] = '*';
                 }
             }
         }
@@ -145,6 +152,30 @@ void player_control() {
     x = x + (move2 == 2 ? range2 : -range2);
 }
 
+void enemy_controls() {
+    // enemy1
+    if (enemy1.direction) {
+        enemy1.y -= enemy1.movement;
+    }
+    else {
+        enemy1.y += enemy1.movement;
+    }
+    if (enemy1.y + (enemy1.direction ? -enemy1.vision : enemy1.vision) < 1 || enemy1.y + (enemy1.direction ? -enemy1.vision : enemy1.vision) > 20) {
+        enemy1.direction = !enemy1.direction;
+    }
+
+    // enemy2
+    if (enemy2.direction) {
+        enemy2.x -= enemy2.movement;
+    }
+    else {
+        enemy2.x += enemy2.movement;
+    }
+    if (enemy2.x + (enemy2.direction ? -enemy2.vision : enemy2.vision) < 1 || enemy2.x + (enemy2.direction ? -enemy2.vision : enemy2.vision) > 80) {
+        enemy2.direction = !enemy2.direction;
+    }
+}
+
 // Main Proccess
 int main() {
     setup();
@@ -157,6 +188,12 @@ int main() {
             return 0;
         }
         print_map();
+        enemy_controls();
+        print_map();
+        if (die) {
+            printf("Mission Fail!\n");
+            return 0;
+        }
     }
 
 
