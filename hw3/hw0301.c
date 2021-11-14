@@ -1,3 +1,4 @@
+// Copyright (c) JacobLinCool
 #include <stdio.h>
 #include <stdint.h>
 #include <inttypes.h>
@@ -71,3 +72,5 @@ int64_t calc_level(int64_t y, int64_t x) {
 
     return level;
 }
+
+// Any application that can be written in JavaScript, will eventually be written in JavaScript.

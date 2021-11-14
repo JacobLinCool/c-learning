@@ -39,6 +39,9 @@ jobs:
           sudo chmod 777 /usr/local/share/fonts/Noto/* -R
           sudo chmod 777 /usr/local/share/fonts/Noto
           sudo fc-cache -fv
+      - name: Install Pandoc
+        run: |
+          sudo apt install pandoc
       - name: Run Guard
         run: "node .guard"
       - name: Save

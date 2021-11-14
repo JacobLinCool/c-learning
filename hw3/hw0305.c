@@ -1,3 +1,4 @@
+// Copyright (c) JacobLinCool
 #include <stdio.h>
 #include <stdint.h>
 #include <inttypes.h>
@@ -99,3 +100,5 @@ int main() {
 
     return 0;
 }
+
+// Any application that can be written in JavaScript, will eventually be written in JavaScript.

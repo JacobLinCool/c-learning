@@ -1,3 +1,4 @@
+// Copyright (c) JacobLinCool
 #include <stdio.h>
 #include <stdint.h>
 #include <inttypes.h>
@@ -6,7 +7,7 @@ const int DEBUG = 0;
 
 // calculate the exponential, from bottom to top
 long double calc_e(int64_t n) {
-    long double e = 2 * n;
+    long double e = 1 + 1 / (1 + 1 / (2 * n));
     for (int64_t i = 2 * (n - 1); i >= 2; i -= 2) e = 1 + 1 / (1 + 1 / (i + 1 / e));
     e += 1;
     return e;
@@ -27,3 +28,5 @@ int main() {
 
     return 0;
 }
+
+// Any application that can be written in JavaScript, will eventually be written in JavaScript.
