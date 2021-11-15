@@ -23,13 +23,14 @@ int main() {
     printf("|   \033[1;94mExperiment of Exponential\033[m    |\n");
     line();
 
+    long double truth = 2.7182818284590452354L;
     long double last = 0, nearest_dist = 100;
     int64_t nearest = 0;
     for (int64_t n = 2; n <= 1e9; n++) {
         long double e = calc_e(n);
-        long double dist = e - 2.7182818284590452354L > 0 ? e - 2.7182818284590452354L : 2.7182818284590452354L - e;
+        long double dist = e - truth > 0 ? e - truth : truth - e;
         printf("| n = \033[93m%2ld\033[m | %.19Lf |\n", n, e);
-        printf("|   DIFF | \033[9%dm%.19Lf\033[m |\n", 1 + (e - 2.7182818284590452354L > 0), dist);
+        printf("|   DIFF | \033[9%dm%.19Lf\033[m |\n", 1 + (e - truth > 0), dist);
         line();
         if (e == last) break;
         last = e;
