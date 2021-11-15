@@ -7,8 +7,8 @@ const int DEBUG = 0;
 
 // calculate the exponential, from bottom to top
 long double calc_e(int64_t n) {
-    long double e = 1 + 1 / (1 + 1 / (2 * n));
-    for (int64_t i = 2 * (n - 1); i >= 2; i -= 2) e = 1 + 1 / (1 + 1 / (i + 1 / e));
+    long double e = 1 + 1 / (1 + 1 / (2 * (long double)n));
+    for (int64_t i = 2 * (n - 1); i >= 2; i -= 2) e = 1 + 1 / (1 + 1 / ((long double)i + 1 / e));
     e += 1;
     return e;
 }
