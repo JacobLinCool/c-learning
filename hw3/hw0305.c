@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <inttypes.h>
-#define MAX_SIZE 2000
+#define MAX_SIZE 100000
 
 const int DEBUG = 0;
 
@@ -27,7 +27,7 @@ int32_t read(int64_t* Pyear, long double* Ptemp) {
     }
 
     printf("Temperature: ");
-    if (scanf("%Lf", Ptemp) != 1 || *Ptemp + 273.15 < 0) return INVALID_INPUT;
+    if (scanf("%Lf", Ptemp) != 1 || *Ptemp + 273.15L < 0) return INVALID_INPUT;
 
     return ACCEPTED_INPUT;
 }
@@ -91,7 +91,7 @@ int main() {
     // predict the temperature
     long double year_predict = 0;
     printf("Please enter the prediction year: ");
-    if (scanf("%Lf", &year_predict) != 1 || (year_predict < 1900)) {
+    if (scanf("%Lf", &year_predict) != 1 || year_predict < INT32_MIN || year_predict > INT32_MAX) {
         printf("Invalid Input!\n");
         return 1;
     }

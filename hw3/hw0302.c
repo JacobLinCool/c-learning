@@ -15,13 +15,13 @@ int main() {
     int64_t first = 0, second = 0;
 
     printf("Please enter the first  number: ");
-    if (scanf("%" SCNd64, &first) != 1 || first < 0 || first > INT32_MAX) {
+    if (scanf("%" SCNd64, &first) != 1 || first < 0 || first > UINT32_MAX) {
         printf("Invalid Input. Received: %" PRId64 "\n", first);
         return 1;
     }
 
     printf("Please enter the second number: ");
-    if (scanf("%" SCNd64, &second) != 1 || second < 0 || second > INT32_MAX) {
+    if (scanf("%" SCNd64, &second) != 1 || second < 0 || second > UINT32_MAX) {
         printf("Invalid Input. Received: %" PRId64 "\n", second);
         return 1;
     }
