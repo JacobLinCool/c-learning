@@ -14,6 +14,8 @@
 # ignore EXE
 *.exe
 
+*.o
+
 .guard/node_modules/
 
 dist/
@@ -31,6 +33,4 @@ dist/
 !final/Makefile
 
 !final/*.zip
-
-**/Makefile
 
