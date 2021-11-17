@@ -1,25 +1,15 @@
 // Copyright (c) JacobLinCool
-#include "hw04.h"
-
-// Input Receiver
-int64_t validate_input(int64_t input) {
-    if (input >= 1 && input <= 100 && input % 2 == 1) {
-        return 1;
-    }
-    return 0;
-}
-
-int64_t ask(char question[], int64_t* input) {
-    printf("%s", question);
-    int32_t success = scanf("%" SCNd64, input);
-    if (success != 1 || validate_input(*input) == 0) {
-        return INVALID_INPUT;
-    }
-    return ACCEPTED_INPUT;
-}
+#include "triangle.h"
 
 // Main Process
 int main() {
+
+    printf("Initial States: \nCheck: %d\nPerimeter: %lf\nArea: %lf\nDegree 1: %lf\nDegree 2: %lf\nDegree 3 %lf\n---\n", check(), get_perimeter(), get_area(), get_1_degree(), get_2_degree(), get_3_degree());
+
+    set_1_point(0.0, 0.0);
+    set_2_point(0.0, 3.0);
+    set_3_point(4.0, 0.0);
+    printf("Points Set: \nCheck: %d\nPerimeter: %lf\nArea: %lf\nDegree 1: %lf\nDegree 2: %lf\nDegree 3 %lf\n---\n", check(), get_perimeter(), get_area(), get_1_degree(), get_2_degree(), get_3_degree());
 
     return 0;
 }

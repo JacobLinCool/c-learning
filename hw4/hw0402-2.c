@@ -28,6 +28,8 @@ int main() {
         return 1;
     }
 
+    hanoi_iterative(disk);
+
     return 0;
 }
 
