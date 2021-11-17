@@ -8,13 +8,18 @@ const { mdToPdf } = require("md-to-pdf");
 async function make(homework) {
     log("=====");
     log(`Generating resources of ${homework}`);
-    const cSources = findFilesByRegex(path.join(__dirname, "../", homework), /hw.+?\.c$/);
+    const cSources = findFilesByRegex(path.join(__dirname, "../", homework), /.+?\.c$/);
+    const hSources = findFilesByRegex(path.join(__dirname, "../", homework), /.+?\.h$/);
 
     //#region Create Makefile
     log("Creating Makefile... ");
-    const makefile = createMakefile(cSources);
-    fs.writeFileSync(path.join(__dirname, "../", homework, "Makefile"), makefile, "utf8");
-    log(`Makefile Created. \n---\n${makefile}\n---`);
+    if (!fs.existsSync(path.join(__dirname, "../", homework, "Makefile"))) {
+        const makefile = createMakefile(cSources);
+        fs.writeFileSync(path.join(__dirname, "../", homework, "Makefile"), makefile, "utf8");
+        log(`Makefile Created. \n---\n${makefile}\n---`);
+    } else {
+        log("Makefile already exists. Skipping...");
+    }
     //#endregion
 
     //#region Homwwork MD -> PDF
@@ -47,7 +52,10 @@ async function make(homework) {
     if (process.platform === "win32") {
         log("Windows does not support zip command.");
     } else {
-        const zipContents = ["README.pdf", "Makefile"].concat(cSources.map((f) => path.basename(f))).concat(hwPDFs.map((f) => path.basename(f)));
+        const zipContents = ["README.pdf", "Makefile"]
+            .concat(cSources.map((f) => path.basename(f)))
+            .concat(hSources.map((f) => path.basename(f)))
+            .concat(hwPDFs.map((f) => path.basename(f)));
         const { stdout, stderr } = await exec(`cd ${homework} && zip ${homework}.zip ${zipContents.join(" ")}`);
         log(`STDOUT: \n${stdout}`);
         if (stderr) log(`STDERR: \n${stderr}`);
