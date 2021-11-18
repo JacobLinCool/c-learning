@@ -105,4 +105,24 @@ double get_3_degree(void) {
     return acos((pow(adjacent_1, 2) + pow(adjacent_2, 2) - pow(opposite, 2)) / (2 * adjacent_1 * adjacent_2)) * 180 / M_PI;
 }
 
+double get_inscribed_center_x(void) {
+    if (!check()) return 0.0;
+
+    double a = sqrt(pow(p2.x - p3.x, 2) + pow(p2.y - p3.y, 2));
+    double b = sqrt(pow(p1.x - p3.x, 2) + pow(p1.y - p3.y, 2));
+    double c = sqrt(pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2));
+
+    return (a * p1.x + b * p2.x + c * p3.x) / (a + b + c);
+}
+
+double get_inscribed_center_y(void) {
+    if (!check()) return 0.0;
+
+    double a = sqrt(pow(p2.x - p3.x, 2) + pow(p2.y - p3.y, 2));
+    double b = sqrt(pow(p1.x - p3.x, 2) + pow(p1.y - p3.y, 2));
+    double c = sqrt(pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2));
+
+    return (a * p1.y + b * p2.y + c * p3.y) / (a + b + c);
+}
+
 // Any application that can be written in JavaScript, will eventually be written in JavaScript.
