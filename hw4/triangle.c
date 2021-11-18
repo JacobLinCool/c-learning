@@ -142,10 +142,8 @@ double get_inscribed_center_area(void) {
 double get_circumscribed_center_x(void) {
     if (!check()) return 0.0;
 
-    double a = p2.x - p1.x;
-    double b = p2.y - p1.y;
-    double c = p3.x - p1.x;
-    double d = p3.y - p1.y;
+    double a = p2.x - p1.x, b = p2.y - p1.y;
+    double c = p3.x - p1.x, d = p3.y - p1.y;
 
     double e = a * (p1.x + p2.x) + b * (p1.y + p2.y);
     double f = c * (p1.x + p3.x) + d * (p1.y + p3.y);
@@ -161,10 +159,8 @@ double get_circumscribed_center_x(void) {
 double get_circumscribed_center_y(void) {
     if (!check()) return 0.0;
 
-    double a = p2.x - p1.x;
-    double b = p2.y - p1.y;
-    double c = p3.x - p1.x;
-    double d = p3.y - p1.y;
+    double a = p2.x - p1.x, b = p2.y - p1.y;
+    double c = p3.x - p1.x, d = p3.y - p1.y;
 
     double e = a * (p1.x + p2.x) + b * (p1.y + p2.y);
     double f = c * (p1.x + p3.x) + d * (p1.y + p3.y);
