@@ -125,4 +125,30 @@ double get_inscribed_center_y(void) {
     return (a * p1.y + b * p2.y + c * p3.y) / (a + b + c);
 }
 
+double get_inscribed_center_area(void) {
+    if (!check()) return -1.0;
+
+    int64_t triangle_area = get_area();
+
+    double a = sqrt(pow(p2.x - p3.x, 2) + pow(p2.y - p3.y, 2));
+    double b = sqrt(pow(p1.x - p3.x, 2) + pow(p1.y - p3.y, 2));
+    double c = sqrt(pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2));
+
+    double r = (2 * triangle_area) / (a + b + c);
+
+    return r * r * M_PI;
+}
+
+double get_circumscribed_center_x(void) {
+
+}
+
+double get_circumscribed_center_y(void) {
+
+}
+
+double get_circumscribed_center_area(void) {
+
+}
+
 // Any application that can be written in JavaScript, will eventually be written in JavaScript.

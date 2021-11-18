@@ -1,3 +1,4 @@
+// Copyright (c) JacobLinCool
 #include "hw04.h"
 
 // hw0401
@@ -115,3 +116,17 @@ int64_t transfer_disk(Rod* a, Rod* b, int64_t* reversed) {
 // hw0403
 
 // hw0404
+long double calculate_equivalent_resistance(int64_t R, int64_t n) {
+    long double equivalent = 0.0L;
+    long double sum = 0.0L;
+
+    for(int64_t i = 0; i < n; i++) {
+        sum += 1.0L / ((long double)R * 2.0L);
+    }
+
+    equivalent = 1.0L / sum;
+
+    return equivalent;
+}
+
+// Any application that can be written in JavaScript, will eventually be written in JavaScript.

@@ -35,3 +35,6 @@ int64_t transfer_disk(Rod* a, Rod* b, int64_t* reversed);
 // hw0403
 
 // hw0404
+long double calculate_equivalent_resistance(int64_t, int64_t);
+
+// Any application that can be written in JavaScript, will eventually be written in JavaScript.
