@@ -5,32 +5,57 @@
 int main() {
 
     printf(
-        "Initial States: \nCheck: %d\nPerimeter: %lf\nArea: %lf\nDegree 1: %lf\nDegree 2: %lf\nDegree 3: %lf\nInscribed (X, Y): (%lf, %lf)\nInscribed Area: %lf\n---\n", 
-        check(), 
-        get_perimeter(), 
-        get_area(), 
-        get_1_degree(), 
-        get_2_degree(), 
-        get_3_degree(), 
-        get_inscribed_center_x(), 
-        get_inscribed_center_y(), 
-        get_inscribed_center_area()
+        "Initial States: \nCheck: %d\nPerimeter: %lf\nArea: %lf\nDegree 1: %lf\nDegree 2: %lf\nDegree 3: %lf\nInscribed (X, Y): (%lf, %lf)\nInscribed Area: %lf\nCircumscribed (X, Y): (%lf, %lf)\nCircumscribed Area: %lf\n---\n",
+        check(),
+        get_perimeter(),
+        get_area(),
+        get_1_degree(),
+        get_2_degree(),
+        get_3_degree(),
+        get_inscribed_center_x(),
+        get_inscribed_center_y(),
+        get_inscribed_center_area(),
+        get_circumscribed_center_x(),
+        get_circumscribed_center_y(),
+        get_circumscribed_center_area()
     );
 
     set_1_point(0.0, 0.0);
     set_2_point(0.0, 3.0);
     set_3_point(4.0, 0.0);
     printf(
-        "Points Set: \nCheck: %d\nPerimeter: %lf\nArea: %lf\nDegree 1: %lf\nDegree 2: %lf\nDegree 3: %lf\nInscribed (X, Y): (%lf, %lf)\nInscribed Area: %lf\n---\n", 
-        check(), 
-        get_perimeter(), 
-        get_area(), 
-        get_1_degree(), 
-        get_2_degree(), 
-        get_3_degree(), 
-        get_inscribed_center_x(), 
-        get_inscribed_center_y(), 
-        get_inscribed_center_area()
+        "Points (0, 0), (0, 3), (4, 0): \nCheck: %d\nPerimeter: %lf\nArea: %lf\nDegree 1: %lf\nDegree 2: %lf\nDegree 3: %lf\nInscribed (X, Y): (%lf, %lf)\nInscribed Area: %lf\nCircumscribed (X, Y): (%lf, %lf)\nCircumscribed Area: %lf\n---\n",
+        check(),
+        get_perimeter(),
+        get_area(),
+        get_1_degree(),
+        get_2_degree(),
+        get_3_degree(),
+        get_inscribed_center_x(),
+        get_inscribed_center_y(),
+        get_inscribed_center_area(),
+        get_circumscribed_center_x(),
+        get_circumscribed_center_y(),
+        get_circumscribed_center_area()
+    );
+
+    set_1_point(0.0, 6.0);
+    set_2_point(-sqrt(36.0 - 9.0), -3.0);
+    set_3_point(sqrt(36.0 - 9.0), -3.0);
+    printf(
+        "Points (0, 6), (-(36.0 - 9.0)**0.5, -3), ((36.0 - 9.0)**0.5, -3): \nCheck: %d\nPerimeter: %lf\nArea: %lf\nDegree 1: %lf\nDegree 2: %lf\nDegree 3: %lf\nInscribed (X, Y): (%lf, %lf)\nInscribed Area: %lf\nCircumscribed (X, Y): (%lf, %lf)\nCircumscribed Area: %lf\n---\n",
+        check(),
+        get_perimeter(),
+        get_area(),
+        get_1_degree(),
+        get_2_degree(),
+        get_3_degree(),
+        get_inscribed_center_x(),
+        get_inscribed_center_y(),
+        get_inscribed_center_area(),
+        get_circumscribed_center_x(),
+        get_circumscribed_center_y(),
+        get_circumscribed_center_area()
     );
     return 0;
 }
