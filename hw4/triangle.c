@@ -5,8 +5,6 @@ static Point p1 = { x: 0.0 / 0.0, y : 0.0 / 0.0 };
 static Point p2 = { x: 0.0 / 0.0, y : 0.0 / 0.0 };
 static Point p3 = { x: 0.0 / 0.0, y : 0.0 / 0.0 };
 
-// static Triangle triangle = { p1: &p1, p2 : &p2, p3 : &p3 };
-
 int set_1_point(double x, double y) {
     p1.x = x;
     p1.y = y;
@@ -149,8 +147,6 @@ double get_circumscribed_center_x(void) {
     double f = c * (p1.x + p3.x) + d * (p1.y + p3.y);
     double g = 2 * (a * (p3.y - p2.y) - b * (p3.x - p2.x));
 
-    if (g == 0) return NAN;
-
     double center_x = (d * e - b * f) / g;
 
     return center_x;
@@ -165,8 +161,6 @@ double get_circumscribed_center_y(void) {
     double e = a * (p1.x + p2.x) + b * (p1.y + p2.y);
     double f = c * (p1.x + p3.x) + d * (p1.y + p3.y);
     double g = 2 * (a * (p3.y - p2.y) - b * (p3.x - p2.x));
-
-    if (g == 0) return NAN;
 
     double center_y = (a * f - c * e) / g;
 

@@ -10,12 +10,6 @@ typedef struct Point {
     double y;
 } Point;
 
-typedef struct Triangle {
-    Point* p1;
-    Point* p2;
-    Point* p3;
-} Triangle;
-
 // Setup three points for a triangle.
 // Success: return 1; Fail: return 0
 int set_1_point(double x, double y);
