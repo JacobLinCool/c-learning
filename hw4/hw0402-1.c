@@ -29,12 +29,7 @@ int main() {
     }
 
     // n, from, to, temp, now
-    if (disk % 2) {
-        hanoi_recursive(disk, 1, 3, 2, disk);
-    }
-    else {
-        hanoi_recursive(disk, 1, 2, 3, disk);
-    }
+    hanoi_recursive(disk, 1, 2, 3, disk);
 
     return 0;
 }

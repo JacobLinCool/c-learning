@@ -34,21 +34,23 @@ int64_t hanoi_recursive(int64_t n, int64_t from, int64_t to, int64_t temp, int64
 int64_t hanoi_iterative(int64_t n) {
     Rod from = create_rod(n, 1), to = create_rod(n, 0), temp = create_rod(n, 0);
 
+    int8_t even = n % 2 == 0 ? 1 : 0;
+
     int64_t moves = power(2, n) - 1;
 
     for (int64_t i = 1; i <= moves; i++) {
         int64_t reversed = 0;
         if (i % 3 == 1) {
             int64_t disk = transfer_disk(&from, &to, &reversed);
-            printf("move disk %" PRId64 " to rod %d\n", disk, reversed ? 1 : 3);
+            printf("move disk %" PRId64 " to rod %d\n", disk, reversed ? 1 : 2 + even);
         }
         else if (i % 3 == 2) {
             int64_t disk = transfer_disk(&from, &temp, &reversed);
-            printf("move disk %" PRId64 " to rod %d\n", disk, reversed ? 1 : 2);
+            printf("move disk %" PRId64 " to rod %d\n", disk, reversed ? 1 : 3 - even);
         }
         else {
             int64_t disk = transfer_disk(&temp, &to, &reversed);
-            printf("move disk %" PRId64 " to rod %d\n", disk, reversed ? 2 : 3);
+            printf("move disk %" PRId64 " to rod %d\n", disk, reversed ? 3 - even : 2 + even);
         }
     }
 
@@ -120,7 +122,7 @@ long double calculate_equivalent_resistance(int64_t R, int64_t n) {
     long double equivalent = 0.0L;
     long double sum = 0.0L;
 
-    for(int64_t i = 0; i < n; i++) {
+    for (int64_t i = 0; i < n; i++) {
         sum += 1.0L / ((long double)R * 2.0L);
     }
 
