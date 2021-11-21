@@ -119,14 +119,11 @@ int64_t transfer_disk(Rod* a, Rod* b, int64_t* reversed) {
 
 // hw0404
 long double calculate_equivalent_resistance(int64_t R, int64_t n) {
-    long double equivalent = 0.0L;
-    long double sum = 0.0L;
+    if (n == 1) return (long double)R * 2.0L;
 
-    for (int64_t i = 0; i < n; i++) {
-        sum += 1.0L / ((long double)R * 2.0L);
-    }
+    long double prev_result = calculate_equivalent_resistance(R, n - 1);
 
-    equivalent = 1.0L / sum;
+    long double equivalent = (prev_result * (long double)R) / (prev_result + (long double)R) + (long double)R;
 
     return equivalent;
 }
