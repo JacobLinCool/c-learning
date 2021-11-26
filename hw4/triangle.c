@@ -94,11 +94,9 @@ double get_area(void) {
 double get_1_degree(void) {
     return get_degree(0);
 }
-
 double get_2_degree(void) {
     return get_degree(1);
 }
-
 double get_3_degree(void) {
     return get_degree(2);
 }
