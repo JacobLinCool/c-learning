@@ -7,8 +7,8 @@ all: pre
 	rm -f *.o
 
 pre:
-	gcc -c -o hw04.o hw04.c
-	gcc -c -o triangle.o triangle.c
+	gcc hw04.c -c -o hw04.o
+	gcc triangle.c -c -o triangle.o
 
 zip:
 	zip mid *.c *.pdf Makefile
