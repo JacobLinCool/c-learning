@@ -22,19 +22,19 @@ int64_t ask(char question[], int64_t* input) {
 int main() {
     int64_t R = 0, n = 0;
 
-    if(ask("Please enter the resistance (1-100): ", &R) == INVALID_INPUT) {
+    if (ask("Please enter the resistance (1-100): ", &R) == INVALID_INPUT) {
         printf("Invalid Input! Received %" PRId64 "\n", R);
         return 1;
     }
 
-    if(ask("Please enter n (1-100): ", &n) == INVALID_INPUT) {
+    if (ask("Please enter n (1-100): ", &n) == INVALID_INPUT) {
         printf("Invalid Input! Received %" PRId64 "\n", n);
         return 1;
     }
 
     long double equivalent = calculate_equivalent_resistance(R, n);
 
-    printf("Ans: %Lg\n", equivalent);
+    printf("Ans: %Lf\n", equivalent);
 
     return 0;
 }
