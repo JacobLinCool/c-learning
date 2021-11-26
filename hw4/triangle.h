@@ -45,3 +45,8 @@ double get_circumscribed_center_x(void);
 double get_circumscribed_center_y(void);
 double get_circumscribed_center_area(void);
 
+// helper functions
+static double distance(Point, Point);
+static void prebuild();
+static int set_point(int8_t, double, double);
+static double get_degree(int8_t);
