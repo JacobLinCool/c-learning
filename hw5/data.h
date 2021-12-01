@@ -1,6 +1,7 @@
 // Copyright (c) JacobLinCool
 #include <stdint.h>
 #include <inttypes.h>
+#include <stddef.h>
 #include <math.h>
 
 double get_mean(const int32_t input[], size_t size);
