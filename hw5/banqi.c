@@ -1,5 +1,6 @@
 // Copyright (c) JacobLinCool
 #include "banqi.h"
+#define DEBUG 0
 
 static void init_chess_set(Chess chess[32]) {
     for (size_t i = 0; i < 2; i++) {
@@ -159,8 +160,14 @@ void player_move(Board* board, int8_t player) {
         if (board->grid[y - 1][x - 1].hidden == 1) {
             board->grid[y - 1][x - 1].hidden = 0;
 
-            if (board->player[player].color == NONE && board->player[!player].color != board->grid[y - 1][x - 1].color) {
+            if (board->player[player].color == NONE && board->player[!player].color == NONE) {
                 board->player[player].color = board->grid[y - 1][x - 1].color;
+                board->player[!player].color = !board->grid[y - 1][x - 1].color;
+
+                if (DEBUG) {
+                    printf("[DEBUG] Assigned Color %d To Player %s\n", board->player[player].color, board->player[player].name);
+                    printf("[DEBUG] Assigned Color %d To Player %s\n", board->player[!player].color, board->player[!player].name);
+                }
             }
 
             break;
@@ -208,6 +215,11 @@ void player_move(Board* board, int8_t player) {
 
                 if (to_y < 1 || to_y > 4 || to_x < 1 || to_x > 8) {
                     printf("Out of area!\n");
+                    continue;
+                }
+
+                if (to_x - x > 1 || x - to_x > 1 || to_y - y > 1 || y - to_y > 1) {
+                    printf("Can't move more than one step!\n");
                     continue;
                 }
 
