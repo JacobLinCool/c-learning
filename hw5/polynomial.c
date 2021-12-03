@@ -102,18 +102,26 @@ void print_polynomial(Polynomial* polynomial) {
             continue;
         }
 
-        printed = 1;
+        if (printed) {
+            if (polynomial->coefficients[i] > 0) {
+                printf(" + ");
+            }
+            else {
+                printf(" - ");
+            }
+        }
 
-        printf("%" PRId64, polynomial->coefficients[i]);
+        printf("%" PRId64, printed == 0 || polynomial->coefficients[i] > 0 ? polynomial->coefficients[i] : -polynomial->coefficients[i]);
+
         if (i > 0) {
             printf("x");
         }
+
         if (i > 1) {
             printf("^%" PRId64, i);
         }
-        if (i != 0) {
-            printf(" + ");
-        }
+
+        printed = 1;
     }
 
     if (!printed) {

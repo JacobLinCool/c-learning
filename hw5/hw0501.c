@@ -4,7 +4,7 @@
 #include "poker.h"
 
 int main() {
-    int8_t cards[13] = { 45,39,34,28,22,16,10,4,46,40,35,29,23 };
+    int8_t cards[13] = { 45,2,34,27,22,15,10,4,28,40,35,41,23 };
 
     printf("Cards: ");
     for (int i = 0; i < 13; i++) {
