@@ -110,8 +110,15 @@ void print_polynomial(Polynomial* polynomial) {
                 printf(" - ");
             }
         }
+        else {
+            if (polynomial->coefficients[i] < 0) {
+                printf("-");
+            }
+        }
 
-        printf("%" PRId64, printed == 0 || polynomial->coefficients[i] > 0 ? polynomial->coefficients[i] : -polynomial->coefficients[i]);
+        if (i == 0 || abs(polynomial->coefficients[i]) != 1) {
+            printf("%" PRId64, abs(polynomial->coefficients[i]));
+        }
 
         if (i > 0) {
             printf("x");
