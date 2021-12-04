@@ -81,6 +81,7 @@ function createMakefile(cSources) {
 }
 
 function createREADME(cSources, hwPDFs, hwID = "") {
+    const cHomework = cSources.filter((f) => path.basename(f).match(/^hw/));
     let readme = `# 程式設計一 Homework ${hwID}
 
         作者：師大資工 114 林振可 (41047029S)
@@ -95,14 +96,14 @@ function createREADME(cSources, hwPDFs, hwID = "") {
         make
         \`\`\`
 
-        \`make\` 應產生 ${cSources.length} 個可執行檔。`
+        \`make\` 應產生 ${cHomework.length} 個可執行檔。`
         .split("\n")
         .map((line) => line.trim())
         .join("\n");
     readme += "\n";
-    if (cSources.length) {
+    if (cHomework.length) {
         readme += `\n## 2. 執行程式\n\n分別執行：\n\n`;
-        readme += cSources.map((f) => `\`\`\`bash\n./${path.basename(f).replace(/\.c$/, "")}\n\`\`\``).join("\n\n");
+        readme += cHomework.map((f) => `\`\`\`bash\n./${path.basename(f).replace(/\.c$/, "")}\n\`\`\``).join("\n\n");
         readme += "\n";
     }
     if (hwPDFs.length) {
