@@ -32,7 +32,7 @@ static int8_t compare(int8_t card_1, int8_t card_2) {
         return 0;
     }
 
-    if (suit_1 > suit_2) {
+    if (suit_1 < suit_2) {
         return 1;
     }
     else {
