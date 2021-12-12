@@ -235,6 +235,8 @@ Board create_board() {
         }
     }
 
+    board.peace = 0;
+
     return board;
 }
 
@@ -270,6 +272,7 @@ void player_move(Board* board, int8_t player) {
     while (1) {
         printf("%s (x,y): ", my->name);
         int8_t x, y;
+        fflush(stdout);
         scanf("%" SCNd8 ",%" SCNd8, &x, &y);
 
         if (y < 1 || y > 4 || x < 1 || x > 8) {
@@ -308,6 +311,7 @@ void player_move(Board* board, int8_t player) {
             int8_t to_x, to_y;
             while (1) {
                 printf("To (x,y): ");
+                fflush(stdout);
                 scanf("%" SCNd8 ",%" SCNd8, &to_x, &to_y);
 
                 if (to_y < 1 || to_y > 4 || to_x < 1 || to_x > 8) {
@@ -348,6 +352,10 @@ void player_move(Board* board, int8_t player) {
                     continue;
                 }
 
+                if (target->type != EMPTY) {
+                    board->peace = -1;
+                }
+
                 target->type = selected->type;
                 target->color = selected->color;
 
@@ -360,6 +368,8 @@ void player_move(Board* board, int8_t player) {
             break;
         }
     }
+
+    board->peace++;
 }
 
 int8_t game_over(Board* board) {
@@ -382,6 +392,10 @@ int8_t game_over(Board* board) {
     }
     else if (black_alive == 0) {
         printf("Red win!\n");
+        return 1;
+    }
+    else if (board->peace >= 50) {
+        printf("Draw!\n");
         return 1;
     }
     else {
