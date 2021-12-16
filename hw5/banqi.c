@@ -245,7 +245,7 @@ void print_board(Board* board) {
     printf(" +---------------+ \n");
 
     for (int8_t i = 0; i < 4; i++) {
-        printf("%" PRId8 "|", i + 1);
+        printf("%" PRId8 "|", (int8_t)(i + 1));
 
         for (int8_t j = 0; j < 8; j++) {
             if (board->grid[i][j].hidden) {
@@ -294,6 +294,8 @@ void player_move(Board* board, int8_t player) {
                     printf("[DEBUG] Assigned Color %d To Player %s\n", your->color, your->name);
                 }
             }
+
+            board->peace = -1;
 
             break;
         }

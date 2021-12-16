@@ -12,7 +12,7 @@ int main() {
     }
     printf("\n");
 
-    printf("Success: %" PRId8 "\n", big_two_sort(cards));
+    printf("Success: %" PRId32 "\n", big_two_sort(cards));
 
     printf("Sorted: ");
     for (int i = 0; i < 13; i++) {

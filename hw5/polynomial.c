@@ -116,8 +116,8 @@ void print_polynomial(Polynomial* polynomial) {
             }
         }
 
-        if (i == 0 || abs(polynomial->coefficients[i]) != 1) {
-            printf("%" PRId64, abs(polynomial->coefficients[i]));
+        if (i == 0 || llabs(polynomial->coefficients[i]) != 1) {
+            printf("%" PRId64, llabs(polynomial->coefficients[i]));
         }
 
         if (i > 0) {
