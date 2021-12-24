@@ -4,6 +4,9 @@
         "stdio.h": "c",
         "stdint.h": "c",
         "inttypes.h": "c",
-        "math.h": "c"
+        "math.h": "c",
+        "cstdlib": "c",
+        "locale": "c",
+        "unistd.h": "c"
     }
 }
