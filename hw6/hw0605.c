@@ -11,7 +11,7 @@ int main() {
     sleep(10);
     printf("ptr = %p\n", ptr);
     printf("size = %ld\n", (sizeof(int64_t) * 1 << 20) * 100);
-    my_realloc(&ptr, (sizeof(int64_t) * 1 << 20) * 100, (sizeof(int64_t) * 1 << 20) * 50);
+    my_realloc((void**)&ptr, (sizeof(int64_t) * 1 << 20) * 100, (sizeof(int64_t) * 1 << 20) * 50);
     sleep(10);
     return 0;
 }
