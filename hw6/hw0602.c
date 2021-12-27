@@ -29,9 +29,9 @@ void test(int64_t a, int64_t b, int32_t expected_returning, uint32_t expected_c)
 
 int main() {
 
-    test(0, 0, 0, 0);
+    test(0, 0, -1, 0);
 
-    test(1, 0, 1, 0);
+    test(1, 0, -1, 0);
 
     test(0, 1, -1, 0);
 
