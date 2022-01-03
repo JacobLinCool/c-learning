@@ -30,6 +30,11 @@ static EXT_GCD extended_euclidean(int64_t a, int64_t b) {
 }
 
 int32_t ext_euclidean(uint32_t a, uint32_t b, uint32_t* c) {
+    if (a == 1 && b == 1) {
+        *c = 1;
+        return 1;
+    }
+
     if (a < b || b == 0) {
         *c = 0;
         return -1;
