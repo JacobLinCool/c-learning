@@ -11,7 +11,7 @@ void my_realloc(void** pptr, size_t before, size_t after) {
         memset(*pptr, 0, after);
         return;
     }
-
+    //printf("123\n");
     // [SPEC] If size is zero and ptr is not NULL, a new, minimum sized object is allocated and the original object is freed.
     if (after == 0) {
         free(*pptr);
@@ -30,6 +30,7 @@ void my_realloc(void** pptr, size_t before, size_t after) {
         memset(newptr, 0, after);
         memcpy(newptr, *pptr, before);
         free(*pptr);
+        *pptr = newptr;
     }
     if (before > after) {
         size_t before_additional_blocks = before < 9UL ? 0UL : (before - 9UL) / BLOCK_SIZE;
@@ -44,6 +45,10 @@ void my_realloc(void** pptr, size_t before, size_t after) {
 
         size_t old_size = MIN_SIZE + before_additional_blocks * BLOCK_SIZE;
         size_t new_size = MIN_SIZE + after_additional_blocks * BLOCK_SIZE;
+
+        if (old_size - new_size + 1UL < 0x21) {
+            return;
+        }
         // size_t diff_additional_blocks = (before - new_size) < 9UL ? 0UL : (before - new_size) / BLOCK_SIZE;
 
         // printf("old_size: 0x%lX\n", old_size);
